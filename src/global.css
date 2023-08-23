@@ -1,0 +1,29 @@
+@import url("https://fonts.googleapis.com/css2?family=Wallpoet:wght@400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
+
+body {
+  margin: 0;
+  line-height: normal;
+}
+:root {
+  /* fonts */
+  --font-roboto: Roboto;
+  --font-wallpoet: Wallpoet;
+
+  /* font sizes */
+  --font-size-sm: 14px;
+  --font-size-5xl: 24px;
+  --font-size-9xl: 28px;
+  --font-size-29xl: 48px;
+  --font-size-lg: 18px;
+
+  /* Colors */
+  --color-white: #fff;
+  --color-black: #000;
+  --color-gainsboro-100: rgba(217, 217, 217, 0.9);
+  --color-fuchsia: #da48ff;
+
+  /* Gaps */
+  --gap-lgi: 19px;
+}
