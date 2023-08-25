@@ -13,6 +13,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import PrivateRoute from "./components/PrivateRoute";
 import Header from './components/Header';
+import Footer from './components/Footer';
 
 
 function App() {
@@ -69,7 +70,7 @@ function App() {
   return (
     <>
       <Header />
-      {/* <ToastContainer /> */}
+      <ToastContainer />
 
       {/* Rutas y demás contenido */}
       <Routes>        
@@ -80,6 +81,10 @@ function App() {
           <Route path="/home" element={<Home />} />
         </Route>
       </Routes>
+
+      <Footer />
+
+
     </>
   );
 }

@@ -62,7 +62,8 @@ const Header = () => {
               }}
               >
               {/* Iniciar Sesión */}
-              {isLoggingOut ? 'Cerrando sesión...' : 'Cerrar sesión'}
+              {isLoggingOut ? 'Cerrando sesión...' : 'Cerrar sesión'}           
+
               </Button>
             ) : (
               <Link to="/iniciosesion">

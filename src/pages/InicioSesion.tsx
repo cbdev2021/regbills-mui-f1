@@ -195,7 +195,18 @@ const InicioSesion: FunctionComponent = () => {
             >
                     Iniciar sesión
             </Button>
+
+            <div className={styles.noTienesCuentaContainer}>
+            <span>¿No tienes cuenta? </span>
+            <Link to="/registro" className={styles.registrate}>
+              <b className={styles.registrate}>Registrate</b>
+            </Link>
+          </div>
+
+
         </form>
+
+        
         
       </div>
     </Container>
