@@ -18,6 +18,7 @@ import ProfileScreen from './screens/ProfileScreen.jsx';
 import PrivateRoute from './components/PrivateRoute.jsx';
 import InicioSesion from './pages/InicioSesion.js';
 import Registro from './pages/Registro.js';
+import Profile from './pages/Profile.js';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -28,6 +29,7 @@ const router = createBrowserRouter(
       
       <Route path='' element={<PrivateRoute />}>
         <Route path='/registro' element={<Registro />} />
+        <Route path='/profile' element={<Profile />} />
       </Route>
     </Route>
   )

@@ -14,6 +14,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import PrivateRoute from "./components/PrivateRoute";
 import Header from './components/Header';
 import Footer from './components/Footer';
+import Profile from "./pages/Profile";
 
 
 function App() {
@@ -79,6 +80,7 @@ function App() {
         <Route path='' element={<PrivateRoute />}>
           {/* <Route path='/registro' element={<Registro />} /> */}
           <Route path="/home" element={<Home />} />
+          <Route path="/profile" element={<Profile />} />
         </Route>
       </Routes>
 

@@ -47,3 +47,17 @@ export const register = async (userData) => {
     throw error.response.data; // Si hay un error, se lanza la respuesta de error de la API
   }
 };
+
+
+export const profile = async (userData) => {
+  const { name, email, password } = userData; // Desestructurar el objeto para obtener las propiedades
+
+  try {
+    const response = await axios.put(`${BASE_URL}/api/users/profile`, { name, email, password });
+    console.log("response register");
+    return response.data; // Suponiendo que la respuesta contiene un token de autenticación u otra información relevante
+  } catch (error) {
+    console.log("error register");
+    throw error.response.data; // Si hay un error, se lanza la respuesta de error de la API
+  }
+};

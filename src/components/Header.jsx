@@ -48,7 +48,7 @@ const Header = () => {
     }
   };
 
-  console.log('anchorEl:', anchorEl); // Agrega esta línea para hacer un console.log de anchorEl
+  //console.log('anchorEl:', anchorEl); // Agrega esta línea para hacer un console.log de anchorEl
 
   return (
     <header>
@@ -103,7 +103,7 @@ const Header = () => {
               <Button color="inherit" component={Link} to="/registro">
                 Registro
               </Button>
-              
+
               <Button color="inherit" component={Link} to="/iniciosesion">
                 Iniciar sesión
               </Button>
