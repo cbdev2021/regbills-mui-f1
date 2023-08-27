@@ -199,7 +199,7 @@ const InicioSesion: FunctionComponent = () => {
             <div className={styles.noTienesCuentaContainer}>
             <span>¿No tienes cuenta? </span>
             <Link to="/registro" className={styles.registrate}>
-              <b className={styles.registrate}>Registrate</b>
+              <b className={styles.registrate}>Registro</b>
             </Link>
           </div>
 

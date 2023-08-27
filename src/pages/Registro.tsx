@@ -275,7 +275,7 @@ const Registro: FunctionComponent = () => {
                   <div className={styles.yaTienesCuentaContainer}>
                     <span>¿Ya tienes cuenta? </span>
                     <Link to="/iniciosesion" className={styles.registrate}>
-                      <b className={styles.iniciaSesin}>Inicia sesión</b>
+                      <b className={styles.iniciaSesin}>Iniciar sesión</b>
                     </Link>
                   </div>
 
