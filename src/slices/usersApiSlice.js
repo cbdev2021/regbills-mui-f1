@@ -1,5 +1,5 @@
 import { apiSlice } from './apiSlice';
-const USERS_URL = '/api/users';
+const USERS_URL = 'http://localhost:10000/api/users';
 
 export const userApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -23,13 +23,38 @@ export const userApiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    
+    // updateUser: builder.mutation({
+    //   query: (data) => ({
+    //     url: `${USERS_URL}/profile`,
+    //     method: 'PUT',
+    //     body: data,
+    //   }),
+    // }),
+
     updateUser: builder.mutation({
-      query: (data) => ({
+      query: (data, token) => ({
         url: `${USERS_URL}/profile`,
         method: 'PUT',
         body: data,
+        headers: {
+          Authorization: `Bearer ${data.token}`,
+        },
       }),
     }),
+
+    // updateUser: builder.mutation({
+    //   query: (data) => ({
+    //     url: `${USERS_URL}/profile`,
+    //     method: 'PUT',
+    //     body: {
+    //       ...data, // Incluye todos los datos del usuario
+    //       token: data.token, // Agrega el token aquí
+    //     },
+    //   }),
+    // }),
+  
+
   }),
 });
 

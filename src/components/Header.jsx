@@ -44,7 +44,7 @@ const Header = () => {
       navigate('/login');
     } catch (err) {
       console.error(err);
-      console.error('Error al cerrar sesión:', error);
+      console.error('Error al cerrar sesión:', err);
     }
   };
 

@@ -77,7 +77,9 @@ function App() {
       <Routes>        
         <Route path="/registro" element={<Registro />} />
         <Route path="/iniciosesion" element={<InicioSesion />} />
-        <Route path='' element={<PrivateRoute />}>
+
+        
+        <Route path='' element={<PrivateRoute  />}>
           {/* <Route path='/registro' element={<Registro />} /> */}
           <Route path="/home" element={<Home />} />
           <Route path="/profile" element={<Profile />} />

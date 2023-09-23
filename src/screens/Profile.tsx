@@ -1,74 +1,98 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Box, Container, TextField, Button, CssBaseline, Typography } from '@mui/material';
 import { toast } from 'react-toastify';
 import styles from './Profile.module.css';
 import { useUpdateUserMutation } from '../slices/usersApiSlice';
 import { setCredentials } from '../slices/authSlice';
-import { useDispatch, useSelector } from 'react-redux';
+
+type UserInfo = {
+  _id: string;
+  email: string;
+  name: string;
+  password: string;
+};
 
 const Profile = () => {
-  const { userInfo, token} = useSelector((state: any) => state.auth); //auth es como el alias del state? 
-
-   console.log("profile userInfo");
-   console.log(userInfo);
-
-
-
-  const [updateProfile, { isLoading }] = useUpdateUserMutation();
-
-  const [email, setEmail] = useState(userInfo.email);
-  const [name, setName] = useState(userInfo.name);
+  const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
   const dispatch = useDispatch();
+  //const { userInfo } = useSelector((state: { auth: any; }) => state.auth);
+  
+  //const userInfo = useSelector((state: { auth: { userInfo: UserInfo } }) => state.auth);
+  //const userInfo = useSelector((state: any ) => state);
+
+  const userInfo = useSelector((state: { auth: any }) => state.auth);
+  
+
+  //const { userInfo } = useSelector((state) => state.auth); 
+  //const userInfo = useSelector((state:  any) => state.auth);
+
+  const [updateProfile, { isLoading }] = useUpdateUserMutation();
+
+  // useEffect(() => {
+  //   setName(userInfo.name);
+  //   setEmail(userInfo.email);
+  // }, [userInfo.email, userInfo.name]);
 
   const submitHandler = async (e: { preventDefault: () => void; }) => {
+    console.log(" en profile ");
+
     e.preventDefault();
     if (password !== confirmPassword) {
-      toast.error('Passwords do not match');
+      toast.error('Las contraseñas no coinciden');
     } else {
       try {
-        // const res = await updateProfile(
-        //   {
-        //     _id: userInfo._id,
-        //     name,
-        //     email,
-        //     password,
-        //   },
-        //   {
-        //     headers: {
-        //       Authorization: `Bearer ${token}`,
-        //     },
-        //   }
-        // ).unwrap();
 
-        // const res = await updateProfile(
-        //   {
-        //     _id: userInfo._id,
-        //     name,
-        //     email,
-        //     password,
-        //   },
-        //   token
-        // ).unwrap();
+        console.log("userinfo en profile");
+        console.log(userInfo);
+       // console.log(email,password);
 
+        dispatch(setCredentials(userInfo));
+       
 
-        const res = await updateProfile({
+        const response = await updateProfile({
           _id: userInfo._id,
           name,
           email,
-          password,
-          token: token, // Agrega el token como una propiedad en el objeto de datos
+          password         
         }).unwrap();
 
+        console.log( 'response');
+
+        if(response){
+
+          console.log( response);
 
 
-        console.log(res);
-        dispatch(setCredentials(res));
-        toast.success('Profile updated successfully');
+          //toast.success('Perfil actualizado correctamente');
+        }
+        else{
+          toast.success('Perfil NO actualizado correctamente');
+
+        }
+
+        
+
+        
+
+        if (!userInfo) {
+          // El usuario no está autenticado, muestra un mensaje de error o redirige a iniciar sesión.
+          toast.error('Debe iniciar sesión para actualizar su perfil.');
+          // Puedes redirigir al usuario a la página de inicio de sesión aquí.
+          return;
+        }
+
+      
+          console.log(response); 
+          dispatch(setCredentials(response));
+          
+       
       } catch (err) {
-        console.error('err:');
+        console.error("err:");
         console.error(err);
         toast.error('Hubo un error al actualizar el perfil.');
       }
@@ -88,8 +112,8 @@ const Profile = () => {
             color="primary"
             variant="outlined"
             type="text"
-            name="name"
-            id="name"
+            name="displayName"
+            id="displayName"
             label="Nombre de Usuario"
             placeholder="Ingrese su nombre de usuario"
             size="medium"
