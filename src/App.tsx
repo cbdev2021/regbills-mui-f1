@@ -15,6 +15,9 @@ import PrivateRoute from "./components/PrivateRoute";
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Profile from "./pages/Profile";
+import RedirectToDefaultPage from "./RedirectToDefaultPage";
+import AddRegister from "./pages/AddRegister";
+
 
 
 function App() {
@@ -33,10 +36,10 @@ function App() {
     let metaDescription = "";
 
     switch (pathname) {
-      case "/":
-        title = "";
-        metaDescription = "";
-        break;
+      // case "/":
+      //   title = "";
+      //   metaDescription = "";
+      //   break;
       case "/registro":
         title = "";
         metaDescription = "";
@@ -61,6 +64,7 @@ function App() {
     }
   }, [pathname]);
 
+ 
   // return (
   //   <Routes>
   //     <Route path="/" element={<Home />} />
@@ -74,16 +78,21 @@ function App() {
       <ToastContainer />
 
       {/* Rutas y demás contenido */}
-      <Routes>        
+      <Routes> 
+            
         <Route path="/registro" element={<Registro />} />
         <Route path="/iniciosesion" element={<InicioSesion />} />
 
-        
-        <Route path='' element={<PrivateRoute  />}>
+        <Route path='' element={<PrivateRoute />}>
           {/* <Route path='/registro' element={<Registro />} /> */}
           <Route path="/home" element={<Home />} />
+          <Route path="/addregister" element={<AddRegister />} />
           <Route path="/profile" element={<Profile />} />
         </Route>
+
+        <Route path="*" element={<RedirectToDefaultPage />} />   
+
+        
       </Routes>
 
       <Footer />
