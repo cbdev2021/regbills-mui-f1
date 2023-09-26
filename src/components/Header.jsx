@@ -17,7 +17,9 @@ import { useLogoutMutation } from '../slices/usersApiSlice';
 import { logout } from '../slices/authSlice';
 import { AccountCircle, ExitToApp } from '@mui/icons-material';
 import HomeIcon from '@mui/icons-material/Home';
-import EditNoteIcon from '@mui/icons-material/EditNote';
+import FormatListNumberedRtlIcon from '@mui/icons-material/FormatListNumberedRtl';
+import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
+import SettingsIcon from '@mui/icons-material/Settings';
 
 const Header = () => {
   const { userInfo } = useSelector((state) => state.auth);
@@ -57,28 +59,70 @@ const Header = () => {
           </Typography>
           {userInfo ? (
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <Grid container spacing={2} alignItems="center">
-                <Grid item xs={4} sm={6}>
-                  <IconButton
-                    size="large"
-                    aria-label="Home"
-                    color="inherit"
-                    component={Link}
-                    to="/home"
-                  >
-                    <HomeIcon />
-                  </IconButton>
+              <Grid container spacing={1} alignItems="center">
+                <Grid item xs={3} sm={3}>
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <IconButton
+                      size="large"
+                      aria-label="Home"
+                      color="inherit"
+                      component={Link}
+                      to="/home"
+                    >
+                      <HomeIcon />
+                    </IconButton>
+                    <Typography variant="caption" align="center">
+                      Home
+                    </Typography>
+                  </div>
                 </Grid>
-                <Grid item xs={6} sm={5}>
-                  <IconButton
-                    size="large"
-                    aria-label="Edit Note"
-                    color="inherit"
-                    component={Link}
-                    to="/addregister"
-                  >
-                    <EditNoteIcon />
-                  </IconButton>
+                <Grid item xs={3} sm={3}>
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <IconButton
+                      size="large"
+                      aria-label="Edit Note"
+                      color="inherit"
+                      component={Link}
+                      to="/addregister"
+                    >
+                      <FormatListNumberedRtlIcon />
+                    </IconButton>
+                    <Typography variant="caption" align="center">
+                      Data
+                    </Typography>
+                  </div>
+                </Grid>
+                <Grid item xs={3} sm={3}>
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <IconButton
+                      size="large"
+                      aria-label="Edit Note"
+                      color="inherit"
+                      component={Link}
+                      to="/addregister"
+                    >
+                      <PlaylistAddIcon />
+                    </IconButton>
+                    <Typography variant="caption" align="center">
+                      Add
+                    </Typography>
+                  </div>
+                </Grid>
+                <Grid item xs={3} sm={3}>
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <IconButton
+                      size="large"
+                      aria-label="Edit Note"
+                      color="inherit"
+                      component={Link}
+                      to="/addregister"
+                    >
+                      <SettingsIcon />
+                    </IconButton>
+                    <Typography variant="caption" align="center">
+                      Conf
+                    </Typography>
+                  </div>
                 </Grid>
               </Grid>
             </Box>
@@ -137,6 +181,6 @@ const Header = () => {
       </AppBar>
     </header>
   );
-};
+}; 
 
 export default Header;
