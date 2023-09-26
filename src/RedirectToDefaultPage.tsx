@@ -12,7 +12,7 @@ function RedirectToDefaultPage() {
     navigate("/iniciosesion");
   }
 
-  return null; // No se renderiza nada en esta función
+  return null; // ejemplo de render
 }
 
 export default RedirectToDefaultPage; // Exporta como valor predeterminado (default export)
