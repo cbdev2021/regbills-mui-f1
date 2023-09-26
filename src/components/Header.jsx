@@ -7,6 +7,8 @@ import {
   IconButton,
   Menu,
   MenuItem,
+  Box,
+  Grid,
 } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -14,14 +16,14 @@ import { useNavigate } from 'react-router-dom';
 import { useLogoutMutation } from '../slices/usersApiSlice';
 import { logout } from '../slices/authSlice';
 import { AccountCircle, ExitToApp } from '@mui/icons-material';
+import HomeIcon from '@mui/icons-material/Home';
+import EditNoteIcon from '@mui/icons-material/EditNote';
 
 const Header = () => {
   const { userInfo } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(false);
-
-  //const [logoutApiCall] = useLogoutMutation();
 
   const [logoutApi, { isLoading: isLoggingOut }] = useLogoutMutation();
 
@@ -35,12 +37,8 @@ const Header = () => {
 
   const handleLogout = async () => {
     try {
-      // await logoutApiCall().unwrap();
-      // dispatch(logout());
-      //
       await logoutApi();
       dispatch(logout());
-      //
       navigate('/login');
     } catch (err) {
       console.error(err);
@@ -48,67 +46,93 @@ const Header = () => {
     }
   };
 
-  //console.log('anchorEl:', anchorEl); // Agrega esta línea para hacer un console.log de anchorEl
-
   return (
     <header>
-      <AppBar position="static" color="primary" 
-        // sx={{ borderRadius: '8px 8px 8px 8px' }}
-      >
-        <Toolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+      <AppBar position="static" color="primary">
+        <Toolbar sx={{ justifyContent: 'space-between' }}>
+          <Typography variant="h6" component="div">
             <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
               RegBills
             </Link>
           </Typography>
           {userInfo ? (
-            <>
-              <IconButton
-                size="large"
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleMenu}
-                color="inherit"
-              >
-                <AccountCircle />
-              </IconButton>
-              <Menu
-                id="menu-appbar"
-                anchorEl={!anchorEl}
-                anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                open={Boolean(anchorEl)}
-                onClose={handleClose}
-              >
-                <MenuItem onClick={handleClose}>
-                  <Link to="/profile" style={{ textDecoration: 'none', color: 'inherit' }}>
-                    Profile
-                  </Link>
-                </MenuItem>
-                <MenuItem onClick={handleLogout}>
-                  Logout
-                </MenuItem>
-              </Menu>
-            </>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <Grid container spacing={2} alignItems="center">
+                <Grid item xs={4} sm={6}>
+                  <IconButton
+                    size="large"
+                    aria-label="Home"
+                    color="inherit"
+                    component={Link}
+                    to="/home"
+                  >
+                    <HomeIcon />
+                  </IconButton>
+                </Grid>
+                <Grid item xs={6} sm={5}>
+                  <IconButton
+                    size="large"
+                    aria-label="Edit Note"
+                    color="inherit"
+                    component={Link}
+                    to="/addregister"
+                  >
+                    <EditNoteIcon />
+                  </IconButton>
+                </Grid>
+              </Grid>
+            </Box>
+          ) : null}
+          {userInfo ? (
+            <IconButton
+              size="large"
+              aria-label="account of current user"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              onClick={handleMenu}
+              color="inherit"
+            >
+              <AccountCircle />
+            </IconButton>
           ) : (
-            <>              
-              <Button color="inherit" component={Link} to="/registro">
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <Button
+                color="inherit"
+                component={Link}
+                to="/registro"
+                sx={{ marginRight: '10px' }}
+              >
                 Registro
               </Button>
-
               <Button color="inherit" component={Link} to="/iniciosesion">
                 Iniciar sesión
               </Button>
-            </>
+            </Box>
           )}
+          <Menu
+            id="menu-appbar"
+            anchorEl={!anchorEl}
+            anchorOrigin={{
+              vertical: 'top',
+              horizontal: 'right',
+            }}
+            keepMounted
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'right',
+            }}
+            open={Boolean(anchorEl)}
+            onClose={handleClose}
+          >
+            <MenuItem onClick={handleClose}>
+              <Link to="/profile" style={{ textDecoration: 'none', color: 'inherit' }}>
+                Profile
+              </Link>
+            </MenuItem>
+            <MenuItem onClick={handleLogout}>
+              Logout
+            </MenuItem>
+          </Menu>
         </Toolbar>
       </AppBar>
     </header>

@@ -4,7 +4,7 @@
   left: calc(50% - 119.5px);
   display: inline-block;
   width: 240px;
-  height: 49px;
+  height: 49px; 
 }
 .homeChild,
 .homeItem {
@@ -118,7 +118,7 @@
 .centroDeAyudaParent {
   left: 398px;
 }
-.home {
+.addregister { 
   position: relative;
   background-color: var(--color-white);
   width: 100%;
@@ -129,4 +129,4 @@
   font-size: var(--font-size-5xl);
   color: var(--color-white);
   font-family: var(--font-wallpoet);
-} 
+}
