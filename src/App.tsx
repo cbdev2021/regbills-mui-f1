@@ -15,9 +15,6 @@ import PrivateRoute from "./components/PrivateRoute";
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Profile from "./pages/Profile";
-import AddRegister from "./pages/AddRegister";
-//import RedirectToDefaultPage from "./RedirectToDefaultPage";
-
 
 
 function App() {
@@ -89,10 +86,6 @@ function App() {
           <Route path="/addregister" element={<AddRegister />} />
           <Route path="/profile" element={<Profile />} />
         </Route>
-
-        {/* <Route path="*" element={<RedirectToDefaultPage />} />    */}
-
-        
       </Routes>
 
       <Footer />
