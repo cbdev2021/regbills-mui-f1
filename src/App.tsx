@@ -15,6 +15,7 @@ import PrivateRoute from "./components/PrivateRoute";
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Profile from "./pages/Profile";
+import AddRegister from "./pages/AddRegister";
 
 
 function App() {
