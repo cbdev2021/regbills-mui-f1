@@ -83,7 +83,7 @@ const Header = () => {
                       aria-label="Edit Note"
                       color="inherit"
                       component={Link}
-                      to="/addregister"
+                      to="/datareg"
                     >
                       <FormatListNumberedRtlIcon />
                     </IconButton>
@@ -115,7 +115,7 @@ const Header = () => {
                       aria-label="Edit Note"
                       color="inherit"
                       component={Link}
-                      to="/addregister"
+                      to="/config"
                     >
                       <SettingsIcon />
                     </IconButton>

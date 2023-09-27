@@ -16,6 +16,8 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import Profile from "./pages/Profile";
 import AddRegister from "./pages/AddRegister";
+import Config from "./pages/Config";
+import DataReg from "./pages/DataReg";
 
 
 function App() {
@@ -83,9 +85,13 @@ function App() {
 
         <Route path='' element={<PrivateRoute />}>
           {/* <Route path='/registro' element={<Registro />} /> */}
+          <Route path="/profile" element={<Profile />} />
           <Route path="/home" element={<Home />} />
           <Route path="/addregister" element={<AddRegister />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/config" element={<Config />} />
+          <Route path="/datareg" element={<DataReg />} />
+
+          
         </Route>
       </Routes>
 
