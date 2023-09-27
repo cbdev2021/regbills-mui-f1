@@ -120,7 +120,7 @@ const Header = () => {
                       <SettingsIcon />
                     </IconButton>
                     <Typography variant="caption" align="center">
-                      Conf
+                      Settings
                     </Typography>
                   </div>
                 </Grid>
@@ -181,6 +181,6 @@ const Header = () => {
       </AppBar>
     </header>
   );
-}; 
+};
 
 export default Header;
