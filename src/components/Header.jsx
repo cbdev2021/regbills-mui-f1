@@ -120,7 +120,7 @@ const Header = () => {
                       <SettingsIcon />
                     </IconButton>
                     <Typography variant="caption" align="center">
-                      Conf
+                      Settings
                     </Typography>
                   </div>
                 </Grid>
