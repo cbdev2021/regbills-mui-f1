@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState } from "react";
+import React, { FunctionComponent, useState, useEffect } from "react";
 import styles from "./Config.module.css";
 import {
   Container,
@@ -11,13 +11,49 @@ import {
   DialogActions,
   Slide,
 } from "@mui/material";
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import PaidIcon from '@mui/icons-material/Paid';
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import PaidIcon from "@mui/icons-material/Paid";
 import TableConfig from "./TableConfig";
+import {
+  useGetTypeValuesByUserIdQuery,
+  useDeleteTypeValueMutation,
+  useUpdateTypeValueMutation,
+  useAddTypeValueMutation,
+} from '../slices/typeValuesApiSlice';
 
 const Config: FunctionComponent = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [dialogTitle, setDialogTitle] = useState("");
+  const [spentData, setSpentData] = useState([]);
+  const [incomeData, setIncomeData] = useState([]);
+  const [deleteTypeValue] = useDeleteTypeValueMutation();
+  const [updateTypeValue] = useUpdateTypeValueMutation();
+  const [addTypeValueMutation] = useAddTypeValueMutation();
+  const userId = '650d32f96386db0b70d0945e';
+  const token = 'TuTokenAqui';
+
+  const { data: dataResponse, refetch } = useGetTypeValuesByUserIdQuery(userId);
+
+  useEffect(() => {
+    if (dataResponse) {
+      const spentDataMapped = dataResponse.filter((item: { typevalue: string; }) => item.typevalue === 'Spent').map((item: { _id: any; subtype: any; description: any; typevalue: any; }) => ({
+        _id: item._id,
+        subtype: item.subtype,
+        description: item.description,
+        typevalue: item.typevalue
+      }));
+
+      const incomeDataMapped = dataResponse.filter((item: { typevalue: string; }) => item.typevalue === 'Income').map((item: { _id: any; subtype: any; description: any; typevalue: any; }) => ({
+        _id: item._id,
+        subtype: item.subtype,
+        description: item.description,
+        typevalue: item.typevalue
+      }));
+
+      setSpentData(spentDataMapped);
+      setIncomeData(incomeDataMapped);
+    }
+  }, [dataResponse]);
 
   const handleClickOpen = (title: string) => {
     setDialogTitle(title);
@@ -28,15 +64,13 @@ const Config: FunctionComponent = () => {
     setOpenDialog(false);
   };
 
-  const [spentData, setSpentData] = useState([
-    { id: 1, subtipo: "Tipo 1" },
-    { id: 2, subtipo: "Tipo 2" },
-  ]);
-
-  const [incomeData, setIncomeData] = useState([
-    { id: 1, subtipo: "Income 1" },
-    { id: 2, subtipo: "Income 2" },
-  ]);
+  const updateData = (newData: any, dataType: any) => {
+    if (dataType === "Spent") {
+      setSpentData(newData);
+    } else if (dataType === "Income") {
+      setIncomeData(newData);
+    }
+  };
 
   return (
     <Container component="main" maxWidth="xs" sx={{ marginTop: 10, height: '540.5px' }}>
@@ -47,13 +81,13 @@ const Config: FunctionComponent = () => {
         </Typography>
 
         <form className={styles.config}>
-          <div className={styles.buttonsContainer }>
+          <div className={styles.buttonsContainer}>
             <Button
               variant="contained"
               color="primary"
               className={styles.button}
               onClick={() => handleClickOpen("Spent")}
-              startIcon={<ShoppingCartIcon />} 
+              startIcon={<ShoppingCartIcon />}
             >
               New Spent
             </Button>
@@ -62,12 +96,11 @@ const Config: FunctionComponent = () => {
               color="secondary"
               className={styles.button}
               onClick={() => handleClickOpen("Income")}
-              startIcon={<PaidIcon />} 
+              startIcon={<PaidIcon />}
             >
               New Income
             </Button>
           </div>
-         
 
           <Dialog
             open={openDialog}
@@ -81,16 +114,30 @@ const Config: FunctionComponent = () => {
             <DialogContent style={{ maxHeight: 400, overflowY: 'scroll' }}>
               {dialogTitle === "Spent" && (
                 <TableConfig
+                  userId={userId}
                   title={dialogTitle}
+                  typevalue="Spent"
                   data={spentData}
-                  updateData={setSpentData}
+                  updateTypeValue={updateTypeValue}
+                  addTypeValueMutation={addTypeValueMutation} 
+                  deleteTypeValueMutation={deleteTypeValue}
+                  token={""}                
+                  updateData={updateData}
+                  refetch={refetch}
                 />
               )}
               {dialogTitle === "Income" && (
                 <TableConfig
+                  userId={userId}
                   title={dialogTitle}
+                  typevalue="Income"
                   data={incomeData}
-                  updateData={setIncomeData}
+                  updateTypeValue={updateTypeValue}
+                  addTypeValueMutation={addTypeValueMutation} 
+                  deleteTypeValueMutation={deleteTypeValue}
+                  token={""}                
+                  updateData={updateData}
+                  refetch={refetch}
                 />
               )}
             </DialogContent>

@@ -11,7 +11,6 @@ import {
   TableRow,
   TextField,
   IconButton,
-  Box,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
@@ -20,143 +19,239 @@ import SaveIcon from "@mui/icons-material/Save";
 import CancelIcon from "@mui/icons-material/Cancel";
 
 interface TableConfigProps {
+  userId: string;
   title: string;
-  data: { id: number; subtipo: string }[];
-  updateData: (newData: { id: number; subtipo: string }[]) => void;
+  data: {
+    typevalue: any;
+    description: any;
+    _id: string;
+    subtype: string;
+  }[];
+  typevalue: string;
+  updateTypeValue: any;
+  addTypeValueMutation: any;
+  deleteTypeValueMutation: any;
+  token: string;
+  updateData: (newData: any, dataType: string) => void;
+  refetch: () => void;
 }
 
-const TableConfig: FunctionComponent<TableConfigProps> = ({ title, data, updateData }) => {
-  const [editingId, setEditingId] = useState<number | null>(null);
-  const [newSubtipo, setNewSubtipo] = useState("");
-  const [originalSubtipo, setOriginalSubtipo] = useState("");
-  const [addNewSubtipo, setAddNewSubtipo] = useState("");
+const TableConfig: FunctionComponent<TableConfigProps> = ({
+  userId,
+  title,
+  data,
+  typevalue,
+  updateTypeValue,
+  addTypeValueMutation,
+  deleteTypeValueMutation,
+  token,
+  updateData,
+  refetch,
+}) => {
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [newSubtype, setNewSubtype] = useState("");
+  const [originalSubtype, setOriginalSubtype] = useState("");
+  const [addNewSubtype, setAddNewSubtype] = useState("");
   const tableRef = useRef<HTMLTableElement | null>(null);
 
-  const handleEdit = (id: number) => {
+  const handleEdit = (id: string) => {
     setEditingId(id);
-    const currentItem = data.find((item) => item.id === id);
+    const currentItem = data.find((item) => item._id === id);
     if (currentItem) {
-      setNewSubtipo(currentItem.subtipo);
-      setOriginalSubtipo(currentItem.subtipo);
+      setNewSubtype(currentItem.subtype);
+      setOriginalSubtype(currentItem.subtype);
     }
   };
 
-  const handleSave = (id: number) => {
-    const updatedData = data.map((item) =>
-      item.id === id ? { ...item, subtipo: newSubtipo } : item
-    );
-    updateData(updatedData);
-    setEditingId(null);
+  const handleSave = async (id: string) => {
+    try {
+      const itemToUpdate = data.find((item) => item._id === id);
+
+      if (!itemToUpdate) {
+        console.error("Elemento no encontrado para actualizar");
+        return;
+      }
+
+      const updatedItem = {
+        subtype: newSubtype,
+        description: itemToUpdate.description,
+        typevalue: itemToUpdate.typevalue,
+      };
+
+      await updateTypeValue({ id, data: updatedItem });
+      const updatedData = data.map((item) =>
+        item._id === id ? { ...item, ...updatedItem } : item
+      );
+      setEditingId(null);
+      updateData(updatedData, typevalue); // Actualizar los datos en Config
+      refetch(); // Refrescar los datos desde la consulta
+    } catch (error) {
+      console.error("Error al actualizar el valor:", error);
+    }
   };
 
-  const handleDelete = (id: number) => {
-    const updatedData = data.filter((item) => item.id !== id);
-    updateData(updatedData);
+  const handleDelete = async (id: string) => {
+    try {
+      await deleteTypeValueMutation(id);
+      const updatedData = data.filter((item) => item._id !== id);
+      updateData(updatedData, typevalue); // Actualizar los datos en Config
+      refetch(); // Refrescar los datos desde la consulta
+    } catch (error) {
+      console.error("Error al eliminar el valor:", error);
+    }
   };
 
-  const handleAdd = () => {
-    if (addNewSubtipo.trim() !== "") {
-      const newId = data.length + 1;
-      const newItem = { id: newId, subtipo: addNewSubtipo };
-      updateData([...data, newItem]);
-      setAddNewSubtipo("");
+  const handleAdd = async () => {
+    if (addNewSubtype.trim() !== "") {
+
+      console.log("typevalue: ");
+      console.log(typevalue);
+
+      try {
+        const response = await addTypeValueMutation({
+          idUsuario: userId,
+          subtype: addNewSubtype,
+          typevalue: typevalue,
+          description: "value",
+        });
+
+        console.log("response: ");
+        console.log(response);
+
+        const newId = response.data._id;
+        const newItem = { _id: newId, subtype: addNewSubtype, typevalue: typevalue };
+        const updatedData = [...data, newItem];
+        setAddNewSubtype("");
+        updateData(updatedData, typevalue); // Actualizar los datos en Config
+        refetch(); // Refrescar los datos desde la consulta
+      } catch (error) {
+        console.error("Error al agregar el nuevo valor:", error);
+      }
     }
   };
 
   const handleCancelEdit = () => {
     setEditingId(null);
-    setNewSubtipo(originalSubtipo);
+    setNewSubtype(originalSubtype);
   };
 
   useEffect(() => {
     if (!editingId) {
-      setAddNewSubtipo("");
+      setAddNewSubtype("");
     }
   }, [editingId]);
 
   useEffect(() => {
-    // Scroll para llevar el registro editado a la vista
     if (editingId && tableRef.current) {
       const rowElement = tableRef.current.querySelector(`#row-${editingId}`);
       if (rowElement) {
         rowElement.scrollIntoView({ behavior: "smooth", block: "center" });
       }
     }
-  }, [editingId]);
+  }, [editingId, tableRef]);
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
       event.preventDefault();
-      if (editingId !== null) {
+      if (editingId) {
         handleSave(editingId);
       } else {
         handleAdd();
+      }
+    } else if (event.key === "Escape") {
+      event.preventDefault();
+      if (editingId) {
+        handleCancelEdit();
       }
     }
   };
 
   return (
-    <>
-      {/* <Typography variant="h6" gutterBottom>
+    <div>
+      <Typography variant="h6" gutterBottom>
         {title}
-      </Typography> */}
+      </Typography>
       <TableContainer component={Paper}>
-        <Box mt={2} display="flex" justifyContent="center">
-          <TextField
-            label={`New ${title}`}
-            variant="outlined"
-            value={addNewSubtipo}
-            onChange={(e) => setAddNewSubtipo(e.target.value)}
-            onKeyPress={handleKeyPress}
-          />
-          <IconButton onClick={handleAdd} color="primary">
-            <AddIcon />
-          </IconButton>
-        </Box>
-
         <Table ref={tableRef}>
           <TableHead>
             <TableRow>
-              <TableCell>ID</TableCell>
-              <TableCell>{`${title} Type`}</TableCell>
-              <TableCell>Actions</TableCell>
+              <TableCell>Subtype</TableCell>
+              <TableCell align="right">Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
+            <TableRow>
+              <TableCell>
+                <TextField
+                  fullWidth
+                  placeholder="Add New Subtype"
+                  value={addNewSubtype}
+                  onChange={(e) => setAddNewSubtype(e.target.value)}
+                  onKeyPress={handleKeyPress}
+                />
+              </TableCell>
+              <TableCell align="right">
+                <IconButton
+                  aria-label="add"
+                  color="primary"
+                  onClick={handleAdd}
+                  disabled={editingId !== null}
+                >
+                  <AddIcon />
+                </IconButton>
+              </TableCell>
+            </TableRow>
             {data.map((row) => (
-              <TableRow key={row.id} id={`row-${row.id}`}>
-                <TableCell>{row.id}</TableCell>
-                <TableCell>
-                  {editingId === row.id ? (
+              <TableRow key={row._id} id={`row-${row._id}`}>
+                <TableCell component="th" scope="row">
+                  {editingId === row._id ? (
                     <TextField
-                      type="text"
-                      value={newSubtipo}
-                      onChange={(e) => setNewSubtipo(e.target.value)}
+                      fullWidth
+                      value={newSubtype}
+                      onChange={(e) => setNewSubtype(e.target.value)}
                       onKeyPress={handleKeyPress}
                     />
                   ) : (
-                    row.subtipo
+                    row.subtype
                   )}
                 </TableCell>
-                <TableCell>
-                  {editingId === row.id ? (
-                    <>
-                      <IconButton onClick={() => handleSave(row.id)} color="primary">
+                <TableCell align="right">
+                  {editingId === row._id ? (
+                    <div>
+                      <IconButton
+                        aria-label="save"
+                        color="primary"
+                        onClick={() => handleSave(row._id)}
+                      >
                         <SaveIcon />
                       </IconButton>
-                      <IconButton onClick={handleCancelEdit} color="default">
+                      <IconButton
+                        aria-label="cancel"
+                        color="default"
+                        onClick={handleCancelEdit}
+                      >
                         <CancelIcon />
                       </IconButton>
-                    </>
+                    </div>
                   ) : (
-                    <>
-                      <IconButton onClick={() => handleEdit(row.id)} color="primary">
+                    <div>
+                      <IconButton
+                        aria-label="edit"
+                        color="primary"
+                        onClick={() => handleEdit(row._id)}
+                        disabled={editingId !== null}
+                      >
                         <EditIcon />
                       </IconButton>
-                      <IconButton onClick={() => handleDelete(row.id)} color="secondary">
+                      <IconButton
+                        aria-label="delete"
+                        color="secondary"
+                        onClick={() => handleDelete(row._id)}
+                        disabled={editingId !== null}
+                      >
                         <DeleteIcon />
                       </IconButton>
-                    </>
+                    </div>
                   )}
                 </TableCell>
               </TableRow>
@@ -164,7 +259,7 @@ const TableConfig: FunctionComponent<TableConfigProps> = ({ title, data, updateD
           </TableBody>
         </Table>
       </TableContainer>
-    </>
+    </div>
   );
 };
 
