@@ -52,42 +52,50 @@ export const typeValuesApiSlice = apiSlice.injectEndpoints({
     //     },
     //   }),
     // }),
+   
+      // updateTypeValue: builder.mutation({
+      //   query: ({ id, data }) => ({
+      //     url: `${TYPE_VALUES_URL}/update-type-value/${id}`,
+      //     method: 'PUT',
+      //     headers: {
+      //       'Content-Type': 'application/json', // Agregar encabezado Content-Type
+      //       Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTBkMzJmOTYzODZkYjBiNzBkMDk0NWUiLCJpYXQiOjE2OTYxMzUzMDEsImV4cCI6MTY5ODcyNzMwMX0.VzpwJiQAvRmc0G3WZzlpTMzSeYWYmhVhWKkVuxN_sKQ`,
+      //     },
+      //     body: JSON.stringify(data), // Asegurarse de convertir el objeto data a JSON
+      //   }),
+      // }),
 
-    // updateTypeValue: builder.mutation({
-    //     query: ({ id, data }) => ({
-    //       url: `${TYPE_VALUES_URL}/update-type-value/${id}`,
-    //       method: 'PUT',
-    //       body: data,
-    //       headers: {
-    //         Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTBkMzJmOTYzODZkYjBiNzBkMDk0NWUiLCJpYXQiOjE2OTYxMzUzMDEsImV4cCI6MTY5ODcyNzMwMX0.VzpwJiQAvRmc0G3WZzlpTMzSeYWYmhVhWKkVuxN_sKQ`,
-    //       },
-    //     }),
-    //   }),
-
-
-      updateTypeValue: builder.mutation({
-        query: ({ id, data }) => ({
-          url: `${TYPE_VALUES_URL}/update-type-value/${id}`,
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json', // Agregar encabezado Content-Type
-            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTBkMzJmOTYzODZkYjBiNzBkMDk0NWUiLCJpYXQiOjE2OTYxMzUzMDEsImV4cCI6MTY5ODcyNzMwMX0.VzpwJiQAvRmc0G3WZzlpTMzSeYWYmhVhWKkVuxN_sKQ`,
-          },
-          body: JSON.stringify(data), // Asegurarse de convertir el objeto data a JSON
-        }),
+    updateTypeValue: builder.mutation({
+      query: (object) => ({
+        url: `${TYPE_VALUES_URL}/update-type-value/${object.data.id}`,
+        method: 'PUT',
+        body: object.data.registro,
+        headers: {
+          Authorization: `Bearer ${object.data.token}`,
+        },
       }),
-      
-      
+    }),    
+
+    // deleteTypeValue: builder.mutation({
+    //   query: (id) => ({
+    //     url: `${TYPE_VALUES_URL}/delete-type-value/${id}`,
+    //     method: 'DELETE',
+    //     headers: {
+    //         Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTBkMzJmOTYzODZkYjBiNzBkMDk0NWUiLCJpYXQiOjE2OTYxMzUzMDEsImV4cCI6MTY5ODcyNzMwMX0.VzpwJiQAvRmc0G3WZzlpTMzSeYWYmhVhWKkVuxN_sKQ`,
+    //     },
+    //   }),
+    // }),
 
     deleteTypeValue: builder.mutation({
-      query: (id) => ({
-        url: `${TYPE_VALUES_URL}/delete-type-value/${id}`,
+      query: (object) => ({
+        url: `${TYPE_VALUES_URL}/delete-type-value/${object.data.id}`,
         method: 'DELETE',
         headers: {
-            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTBkMzJmOTYzODZkYjBiNzBkMDk0NWUiLCJpYXQiOjE2OTYxMzUzMDEsImV4cCI6MTY5ODcyNzMwMX0.VzpwJiQAvRmc0G3WZzlpTMzSeYWYmhVhWKkVuxN_sKQ`,
+          Authorization: `Bearer ${object.data.token}`,
         },
       }),
     }),
+
     
     getTypeValue: builder.query({
       query: (id, token) => ({
