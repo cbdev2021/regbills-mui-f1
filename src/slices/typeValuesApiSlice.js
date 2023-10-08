@@ -19,15 +19,28 @@ export const typeValuesApiSlice = apiSlice.injectEndpoints({
     // }),
     
     addTypeValue: builder.mutation({
-      query: (data) => ({
+      query: (object) => ({
         url: `${TYPE_VALUES_URL}/add-type-value`,
         method: 'POST',
-        body: data,
+        body: object.registro,
         headers: {
-            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTBkMzJmOTYzODZkYjBiNzBkMDk0NWUiLCJpYXQiOjE2OTYxMzUzMDEsImV4cCI6MTY5ODcyNzMwMX0.VzpwJiQAvRmc0G3WZzlpTMzSeYWYmhVhWKkVuxN_sKQ`,
-          },
+          Authorization: `Bearer ${object.token}`,
+        },
       }),
     }),
+
+
+    
+    // addTypeValue: builder.mutation({
+    //   query: (data) => ({
+    //     url: `${TYPE_VALUES_URL}/add-type-value`,
+    //     method: 'POST',
+    //     body: data,
+    //     headers: {
+    //         Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTBkMzJmOTYzODZkYjBiNzBkMDk0NWUiLCJpYXQiOjE2OTYxMzUzMDEsImV4cCI6MTY5ODcyNzMwMX0.VzpwJiQAvRmc0G3WZzlpTMzSeYWYmhVhWKkVuxN_sKQ`,
+    //       },
+    //   }),
+    // }),
 
     // updateTypeValue: builder.mutation({
     //   query: (id, data ) => ({
@@ -85,25 +98,32 @@ export const typeValuesApiSlice = apiSlice.injectEndpoints({
       }),
     }),
 
-    // getTypeValuesByUserId: builder.query({
-    //   query: (idUsuario, token) => ({
-    //     url: `${TYPE_VALUES_URL}/get-type-values/650d32f96386db0b70d0945e`,
-    //     headers: {
-    //         Authorization: `Bearer ${token}`,
-    //     },
-    //   }),
-    // }),
 
-
+    //1
     getTypeValuesByUserId: builder.query({
-        query: (idUsuario) => ({
-          url: `${TYPE_VALUES_URL}/get-type-values/${idUsuario}`,
+      query: (param) => {  //al parecer solo permite OBJETO de entrada!
+        console.log("type value:", param); // Agregar un console.log aquí
+        return {
+          url: `${TYPE_VALUES_URL}/get-type-values/${param.idUsuario}`,
           headers: {
-            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTBkMzJmOTYzODZkYjBiNzBkMDk0NWUiLCJpYXQiOjE2OTYxMzUzMDEsImV4cCI6MTY5ODcyNzMwMX0.VzpwJiQAvRmc0G3WZzlpTMzSeYWYmhVhWKkVuxN_sKQ`,
+            Authorization: `Bearer ${param.token}`, 
           },
-        }),
-      }),
-      
+        };
+      },
+    }),
+
+    // getTypeValuesByUserId: builder.query({
+    //   query: (idUsuario, token) => {
+    //     console.log("type value:", param); // Agregar un console.log aquí
+    //     return {
+    //       url: `${TYPE_VALUES_URL}/get-type-values/${idUsuario}`,
+    //       headers: {
+    //         Authorization: `Bearer ${token}`, 
+    //       },
+    //     };
+    //   },
+    // }),
+         
   }),
 });
 

@@ -20,6 +20,7 @@ import {
   useUpdateTypeValueMutation,
   useAddTypeValueMutation,
 } from '../slices/typeValuesApiSlice';
+import { useSelector } from "react-redux";
 
 const Config: FunctionComponent = () => {
   const [openDialog, setOpenDialog] = useState(false);
@@ -29,10 +30,30 @@ const Config: FunctionComponent = () => {
   const [deleteTypeValue] = useDeleteTypeValueMutation();
   const [updateTypeValue] = useUpdateTypeValueMutation();
   const [addTypeValueMutation] = useAddTypeValueMutation();
-  const userId = '650d32f96386db0b70d0945e';
-  const token = 'TuTokenAqui';
+  //const userId = '650d32f96386db0b70d0945e';
 
-  const { data: dataResponse, refetch } = useGetTypeValuesByUserIdQuery(userId);
+  const userId = useSelector((state: any) => state.auth.userInfo._id);
+  const token = useSelector((state: any) => state.auth.token);
+  //const stateauth = useSelector((state: any) => state.auth);
+
+  // const param = {
+  //   idUsuario: userId,
+  //   token: token,
+  // };
+
+  //1
+  const { data: dataResponse, refetch } = useGetTypeValuesByUserIdQuery({
+    idUsuario: userId,
+    token: token,
+  });
+
+  //2 not
+  //const { data: dataResponse, refetch } = useGetTypeValuesByUserIdQuery(userId, token   );
+
+
+  //console.log("config : stateauth");
+  //console.log(stateauth);
+
 
   useEffect(() => {
     if (dataResponse) {
@@ -56,6 +77,9 @@ const Config: FunctionComponent = () => {
   }, [dataResponse]);
 
   const handleClickOpen = (title: string) => {
+    // console.log("token ::");
+    // console.log(token);
+
     setDialogTitle(title);
     setOpenDialog(true);
   };
@@ -119,9 +143,9 @@ const Config: FunctionComponent = () => {
                   typevalue="Spent"
                   data={spentData}
                   updateTypeValue={updateTypeValue}
-                  addTypeValueMutation={addTypeValueMutation} 
+                  addTypeValueMutation={addTypeValueMutation}
                   deleteTypeValueMutation={deleteTypeValue}
-                  token={""}                
+                  token={token}
                   updateData={updateData}
                   refetch={refetch}
                 />
@@ -133,9 +157,9 @@ const Config: FunctionComponent = () => {
                   typevalue="Income"
                   data={incomeData}
                   updateTypeValue={updateTypeValue}
-                  addTypeValueMutation={addTypeValueMutation} 
+                  addTypeValueMutation={addTypeValueMutation}
                   deleteTypeValueMutation={deleteTypeValue}
-                  token={""}                
+                  token={token}
                   updateData={updateData}
                   refetch={refetch}
                 />

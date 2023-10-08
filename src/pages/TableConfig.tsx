@@ -108,12 +108,25 @@ const TableConfig: FunctionComponent<TableConfigProps> = ({
       console.log(typevalue);
 
       try {
-        const response = await addTypeValueMutation({
-          idUsuario: userId,
-          subtype: addNewSubtype,
-          typevalue: typevalue,
-          description: "value",
-        });
+        // const response = await addTypeValueMutation({
+        //   idUsuario: userId,
+        //   subtype: addNewSubtype,
+        //   typevalue: typevalue,
+        //   description: "value",
+        // });
+
+        const response = await addTypeValueMutation(
+          {
+            registro:
+            {
+              idUsuario: userId,
+              subtype: addNewSubtype,
+              typevalue: typevalue,
+              description: "value",
+            },
+            token: token
+          }
+        );
 
         console.log("response: ");
         console.log(response);

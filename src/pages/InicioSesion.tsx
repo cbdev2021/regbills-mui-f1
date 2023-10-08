@@ -43,6 +43,12 @@ const InicioSesion: FunctionComponent = () => {
                                             token: res.token
                                           }, 
                                 token: res.token }));
+    
+    console.log("inicio - userInfo.token:");    
+    console.log(userInfo);                         
+      
+    console.log("inicio - res.token:", res.token); // Agregar un console.log aquí                                    
+
       navigate('/home');
     } catch (err) {
       console.error(err);

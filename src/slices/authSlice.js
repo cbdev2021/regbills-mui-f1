@@ -35,7 +35,6 @@ const authSlice = createSlice({
     // token: localStorage.getItem('token') || '',
     userInfo:  null,
     token: null,
-    tokenaa: null,
   },
   reducers: {
     setCredentials: (state, action) => {
