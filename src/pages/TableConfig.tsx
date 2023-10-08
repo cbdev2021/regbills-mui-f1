@@ -77,8 +77,18 @@ const TableConfig: FunctionComponent<TableConfigProps> = ({
         description: itemToUpdate.description,
         typevalue: itemToUpdate.typevalue,
       };
+      
+      //await updateTypeValue({ id, data: updatedItem });
+      await updateTypeValue(
+        { 
+          data:{ 
+            id: id,
+            registro: updatedItem,
+            token: token              
+          } 
+        }
+      );
 
-      await updateTypeValue({ id, data: updatedItem });
       const updatedData = data.map((item) =>
         item._id === id ? { ...item, ...updatedItem } : item
       );
@@ -92,7 +102,16 @@ const TableConfig: FunctionComponent<TableConfigProps> = ({
 
   const handleDelete = async (id: string) => {
     try {
-      await deleteTypeValueMutation(id);
+      //await deleteTypeValueMutation(id);
+      await deleteTypeValueMutation(
+        { 
+          data:{ 
+            id: id,
+            token: token              
+          } 
+        }
+      );
+
       const updatedData = data.filter((item) => item._id !== id);
       updateData(updatedData, typevalue); // Actualizar los datos en Config
       refetch(); // Refrescar los datos desde la consulta
