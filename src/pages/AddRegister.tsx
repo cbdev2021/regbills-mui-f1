@@ -308,6 +308,39 @@ const AddRegister: FunctionComponent = () => {
               {isLoading ? (
                 <CircularProgress />
               ) : (
+                // <TableContainer component={Paper} style={{ maxHeight: "70vh", width: "100%" }}>
+                //   <Table>
+                //     <TableHead>
+                //       <TableRow>
+                //         {/* <TableCell>ID</TableCell> */}
+                //         <TableCell>Tipo de Registro</TableCell>
+                //         <TableCell>Descripción</TableCell>
+                //         <TableCell>Fecha</TableCell>
+                //         <TableCell>Monto</TableCell>
+                //         <TableCell>Acciones</TableCell>
+                //       </TableRow>
+                //     </TableHead>
+                //     <TableBody>
+                //       {dataResponseRegisters.map((row: any) => (
+                //         <TableRow key={row._id}>
+                //           {/* <TableCell>{row._id}</TableCell> */}
+                //           <TableCell>{row.tipoRegistro}</TableCell>
+                //           <TableCell>{row.descRegistro}</TableCell>
+                //           <TableCell>{row.fecha}</TableCell>
+                //           <TableCell>{row.monto}</TableCell>
+                //           <TableCell>
+                //             <IconButton aria-label="edit">
+                //               <EditIcon color="primary" />
+                //             </IconButton>
+                //             <IconButton aria-label="delete">
+                //               <DeleteIcon color="secondary" />
+                //             </IconButton>
+                //           </TableCell>
+                //         </TableRow>
+                //       ))}
+                //     </TableBody>
+                //   </Table>
+                // </TableContainer>
                 <TableContainer component={Paper} style={{ maxHeight: "70vh", width: "100%" }}>
                   <Table>
                     <TableHead>
@@ -321,26 +354,33 @@ const AddRegister: FunctionComponent = () => {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {dataResponseRegisters.map((row: any) => (
-                        <TableRow key={row._id}>
-                          {/* <TableCell>{row._id}</TableCell> */}
-                          <TableCell>{row.tipoRegistro}</TableCell>
-                          <TableCell>{row.descRegistro}</TableCell>
-                          <TableCell>{row.fecha}</TableCell>
-                          <TableCell>{row.monto}</TableCell>
-                          <TableCell>
-                            <IconButton aria-label="edit">
-                              <EditIcon color="primary" />
-                            </IconButton>
-                            <IconButton aria-label="delete">
-                              <DeleteIcon color="secondary" />
-                            </IconButton>
-                          </TableCell>
+                      {dataResponseRegisters ? (
+                        dataResponseRegisters.map((row: any) => (
+                          <TableRow key={row._id}>
+                            {/* <TableCell>{row._id}</TableCell> */}
+                            <TableCell>{row.tipoRegistro}</TableCell>
+                            <TableCell>{row.descRegistro}</TableCell>
+                            <TableCell>{row.fecha}</TableCell>
+                            <TableCell>{row.monto}</TableCell>
+                            <TableCell>
+                              <IconButton aria-label="edit">
+                                <EditIcon color="primary" />
+                              </IconButton>
+                              <IconButton aria-label="delete">
+                                <DeleteIcon color="secondary" />
+                              </IconButton>
+                            </TableCell>
+                          </TableRow>
+                        ))
+                      ) : (
+                        <TableRow>
+                          <TableCell colSpan={5}>No data available</TableCell>
                         </TableRow>
-                      ))}
+                      )}
                     </TableBody>
                   </Table>
                 </TableContainer>
+
               )}
             </DialogContent>
             <DialogActions>
