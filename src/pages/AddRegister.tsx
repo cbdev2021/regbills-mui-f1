@@ -312,7 +312,7 @@ const AddRegister: FunctionComponent = () => {
                   <Table>
                     <TableHead>
                       <TableRow>
-                        <TableCell>ID</TableCell>
+                        {/* <TableCell>ID</TableCell> */}
                         <TableCell>Tipo de Registro</TableCell>
                         <TableCell>Descripción</TableCell>
                         <TableCell>Fecha</TableCell>
@@ -323,7 +323,7 @@ const AddRegister: FunctionComponent = () => {
                     <TableBody>
                       {dataResponseRegisters.map((row: any) => (
                         <TableRow key={row._id}>
-                          <TableCell>{row._id}</TableCell>
+                          {/* <TableCell>{row._id}</TableCell> */}
                           <TableCell>{row.tipoRegistro}</TableCell>
                           <TableCell>{row.descRegistro}</TableCell>
                           <TableCell>{row.fecha}</TableCell>
