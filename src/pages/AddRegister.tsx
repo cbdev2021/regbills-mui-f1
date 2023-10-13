@@ -10,76 +10,62 @@ import {
   DialogContent,
   DialogActions,
   Slide,
-  TextField, // Importamos TextField
+  TextField,
 } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import PaidIcon from "@mui/icons-material/Paid";
-import TableConfig from "./TableConfig";
-import {
-  useGetTypeValuesByUserIdQuery,
-} from '../slices/typeValuesApiSlice';
-import {
-  // useDeleteTypeValueMutation,
-  // useUpdateTypeValueMutation,
-  // useAddTypeValueMutation,
-  useAddRegisterMutation, // En lugar de useAddUserMutation
- // useUpdateRegisterMutation, // En lugar de useUpdateUserMutation
- // useDeleteRegisterMutation, // En lugar de useDeleteUserMutation
-  //useGetRegisterByIdQuery, // En lugar de useGetUserByIdQuery
-  //useGetRegistersByCriteriaQuery, // En lugar de useGetUsersByCriteriaQuery
-} from '../slices/registerApiSlice';
+import { useGetTypeValuesByUserIdQuery } from '../slices/typeValuesApiSlice';
+import { useAddRegisterMutation } from '../slices/registerApiSlice';
 import { useSelector } from "react-redux";
 import TableAddRegister from "./TableAddRegister";
+
+import { Box, IconButton, Tab, Tabs } from "@mui/material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+
+//tabla registros
+import TableContainer from "@mui/material/TableContainer";
+import Table from "@mui/material/Table";
+import TableHead from "@mui/material/TableHead";
+import TableBody from "@mui/material/TableBody";
+import TableRow from "@mui/material/TableRow";
+import TableCell from "@mui/material/TableCell";
+import Paper from "@mui/material/Paper";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+
+import { useGetRegistersByCriteriaQuery } from '../slices/registerApiSlice'; // Import the hook
+import { CircularProgress } from "@mui/material";
+
+
 
 const AddRegister: FunctionComponent = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [dialogTitle, setDialogTitle] = useState("");
   const [spentData, setSpentData] = useState([]);
   const [incomeData, setIncomeData] = useState([]);
-  const [numericValue, setNumericValue] = useState(""); // Estado para el valor numérico
-  //const [deleteTypeValue] = useDeleteRegisterMutation();
- // const [updateTypeValue] = useUpdateRegisterMutation();
+  const [numericValue, setNumericValue] = useState("");
   const [addTypeValueMutation] = useAddRegisterMutation();
-  //const [numericKey, setNumericKey] = useState(""); 
 
   const userId = useSelector((state: any) => state.auth.userInfo._id);
   const token = useSelector((state: any) => state.auth.token);
-
   const { data: dataResponse, refetch } = useGetTypeValuesByUserIdQuery({
     idUsuario: userId,
     token: token,
   });
 
-  // useEffect(() => {
-  //   if (dataResponse) {
-  //     const spentDataMapped = dataResponse.filter((item: { typevalue: string; }) => item.typevalue === 'Spent').map((item: { _id: any; subtype: any; description: any; typevalue: any; }) => ({
-  //       _id: item._id,
-  //       subtype: item.subtype,
-  //       description: item.description,
-  //       typevalue: item.typevalue
-  //     }));
+  const { data: dataResponseRegisters, isLoading } = useGetRegistersByCriteriaQuery({
+    data: {
+      idUsuario: userId,
+    },
+    token: token,
+  });
 
-  //     const incomeDataMapped = dataResponse.filter((item: { typevalue: string; }) => item.typevalue === 'Income').map((item: { _id: any; subtype: any; description: any; typevalue: any; }) => ({
-  //       _id: item._id,
-  //       subtype: item.subtype,
-  //       description: item.description,
-  //       typevalue: item.typevalue
-  //     }));
+  const [loading, setLoading] = useState(true);
 
-  //     setSpentData(spentDataMapped);
-  //     setIncomeData(incomeDataMapped);
-  //   }
-  // }, [dataResponse]);
+
   useEffect(() => {
     if (dataResponse) {
-      // const spentDataMapped = dataResponse
-      //   .filter((item: { typevalue: string; }) => item.typevalue === 'Spent')
-      //   .map((item: { subtype: any; }) => item.subtype); // Aquí solo seleccionamos el campo "subtype"
-
-      // const incomeDataMapped = dataResponse
-      //   .filter((item: { typevalue: string; }) => item.typevalue === 'Income')
-      //   .map((item: { subtype: any; }) => item.subtype); // Aquí solo seleccionamos el campo "subtype"
-
       const spentDataMapped = dataResponse
         .filter((item: { typevalue: string; }) => item.typevalue === 'Spent')
         .map((item: { _id: string; subtype: any; }) => ({
@@ -94,28 +80,15 @@ const AddRegister: FunctionComponent = () => {
           subtype: item.subtype
         }));
 
-
-
-
-      console.log('spentDataMapped');
-      console.log(spentDataMapped);
-      console.log('incomeDataMapped');
-      console.log(incomeDataMapped);
-
-
-
       setSpentData(spentDataMapped);
       setIncomeData(incomeDataMapped);
     }
   }, [dataResponse]);
 
-
-
-
   const handleClickOpen = (title: string) => {
     setDialogTitle(title);
     setOpenDialog(true);
-    setNumericValue(""); // Establecer el valor inicial en blanco cuando se abre el diálogo.
+    setNumericValue("");
   };
 
   const handleClose = () => {
@@ -129,6 +102,106 @@ const AddRegister: FunctionComponent = () => {
       setIncomeData(newData);
     }
   };
+
+  const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
+  const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
+
+  const months = [
+    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+  ];
+
+  const years = Array.from({ length: 3 }, (_, i) => currentYear - 1 + i);
+
+  const allDates = years.map((year) => months.map((month) => `${month} ${year}`)).flat();
+
+  const handleNextDate = () => {
+    const currentIndex = allDates.indexOf(`${months[currentMonth]} ${currentYear}`);
+    if (currentIndex < allDates.length - 1) {
+      const [selectedMonth, selectedYear] = allDates[currentIndex + 1].split(" ");
+      setCurrentMonth(months.indexOf(selectedMonth));
+      setCurrentYear(Number(selectedYear));
+    }
+  };
+
+  const handlePreviousDate = () => {
+    const currentIndex = allDates.indexOf(`${months[currentMonth]} ${currentYear}`);
+    if (currentIndex > 0) {
+      const [selectedMonth, selectedYear] = allDates[currentIndex - 1].split(" ");
+      setCurrentMonth(months.indexOf(selectedMonth));
+      setCurrentYear(Number(selectedYear));
+    }
+  };
+
+  const handleTabClick = (event: React.SyntheticEvent, newValue: number) => {
+    const [selectedMonth, selectedYear] = allDates[newValue].split(" ");
+    setCurrentMonth(months.indexOf(selectedMonth));
+    setCurrentYear(Number(selectedYear));
+  };
+
+  //dialog tabla regs
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpenRegisters = () => {
+    setOpen(true);
+  };
+
+  const handleCloseRegisters = () => {
+    setOpen(false);
+  };
+
+  // const data = [
+  //   {
+  //     _id: "6512787e3f7ccdc752cdd070",
+  //     tipoRegistro: "Ingreso",
+  //     descRegistro: "Pago de Moneas",
+  //     fecha: "2023-09-30T00:00:00.000Z",
+  //     monto: 25000,
+  //   },
+  //   {
+  //     _id: "651281c7eb514a26123f9ed3",
+  //     tipoRegistro: "Ingreso",
+  //     descRegistro: "Pago de Moneas",
+  //     fecha: "2023-09-30T00:00:00.000Z",
+  //     monto: 100,
+  //   },
+  //   {
+  //     _id: "651281c7eb514a26123f9ed3",
+  //     tipoRegistro: "Ingreso",
+  //     descRegistro: "Pago de Moneas",
+  //     fecha: "2023-09-30T00:00:00.000Z",
+  //     monto: 100,
+  //   },
+  //   {
+  //     _id: "651281c7eb514a26123f9ed3",
+  //     tipoRegistro: "Ingreso",
+  //     descRegistro: "Pago de Moneas",
+  //     fecha: "2023-09-30T00:00:00.000Z",
+  //     monto: 100,
+  //   },
+  //   {
+  //     _id: "651281c7eb514a26123f9ed3",
+  //     tipoRegistro: "Ingreso",
+  //     descRegistro: "Pago de Moneas",
+  //     fecha: "2023-09-30T00:00:00.000Z",
+  //     monto: 100,
+  //   },
+  //   {
+  //     _id: "651281c7eb514a26123f9ed3",
+  //     tipoRegistro: "Ingreso",
+  //     descRegistro: "Pago de Moneas",
+  //     fecha: "2023-09-30T00:00:00.000Z",
+  //     monto: 100,
+  //   },
+  //   {
+  //     _id: "651281c7eb514a26123f9ed3",
+  //     tipoRegistro: "Ingreso",
+  //     descRegistro: "Pago de Moneas",
+  //     fecha: "2023-09-30T00:00:00.000Z",
+  //     monto: 100,
+  //   }
+  //   // Agrega el resto de los datos aquí
+  // ];
 
   return (
     <Container component="main" maxWidth="xs" sx={{ marginTop: 10, height: '540.5px' }}>
@@ -171,38 +244,28 @@ const AddRegister: FunctionComponent = () => {
             <DialogTitle>{dialogTitle}</DialogTitle>
             <DialogContent style={{ maxHeight: 400, overflowY: 'scroll' }}>
               {dialogTitle === "Spent" && (
-                <>
-
-                  <TableAddRegister
-                    userId={userId}
-                    title={dialogTitle}
-                    typevalue="Spent"
-                    data={spentData}
-                    //updateTypeValue={updateTypeValue}
-                    addTypeValueMutation={addTypeValueMutation}
-                    //deleteTypeTypevalueMutation={deleteTypeValue}
-                    token={token}
-                    updateData={updateData}
-                    refetch={refetch}
-                  />
-                </>
+                <TableAddRegister
+                  userId={userId}
+                  title={dialogTitle}
+                  typevalue="Spent"
+                  data={spentData}
+                  addTypeValueMutation={addTypeValueMutation}
+                  token={token}
+                  updateData={updateData}
+                  refetch={refetch}
+                />
               )}
               {dialogTitle === "Income" && (
-                <>
-
-                  <TableAddRegister
-                    userId={userId}
-                    title={dialogTitle}
-                    typevalue="Income"
-                    data={incomeData}
-                    //updateTypeValue={updateTypeValue}
-                    addTypeValueMutation={addTypeValueMutation}
-                    //deleteTypeTypevalueMutation={deleteTypeValue}
-                    token={token}
-                    updateData={updateData}
-                    refetch={refetch}
-                  />
-                </>
+                <TableAddRegister
+                  userId={userId}
+                  title={dialogTitle}
+                  typevalue="Income"
+                  data={incomeData}
+                  addTypeValueMutation={addTypeValueMutation}
+                  token={token}
+                  updateData={updateData}
+                  refetch={refetch}
+                />
               )}
             </DialogContent>
             <DialogActions>
@@ -211,7 +274,82 @@ const AddRegister: FunctionComponent = () => {
               </Button>
             </DialogActions>
           </Dialog>
+
+          <Box>
+            <Box display="flex" alignItems="center" justifyContent="center">
+              <IconButton onClick={handlePreviousDate}>
+                <ArrowBackIcon />
+              </IconButton>
+              <Tabs
+                value={allDates.indexOf(`${months[currentMonth]} ${currentYear}`)}
+                onChange={handleTabClick}
+                indicatorColor="primary"
+                textColor="primary"
+                variant="scrollable"
+                scrollButtons="auto"  // Show scroll buttons
+              >
+                {allDates.map((date, index) => (
+                  <Tab key={date} label={date} value={index} style={{ width: "100%" }}
+                    onClick={() => handleClickOpenRegisters()}
+                  />
+                ))}
+              </Tabs>
+              <IconButton onClick={handleNextDate}>
+                <ArrowForwardIcon />
+              </IconButton>
+            </Box>
+            <Typography align="center">Selected Date: {months[currentMonth]} - {currentYear}</Typography>
+          </Box>
         </form>
+
+        <div>
+          <Dialog open={open} onClose={handleCloseRegisters} maxWidth="md" scroll="paper">
+            <DialogContent dividers>
+              {isLoading ? (
+                <CircularProgress />
+              ) : (
+                <TableContainer component={Paper} style={{ maxHeight: "70vh", width: "100%" }}>
+                  <Table>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>ID</TableCell>
+                        <TableCell>Tipo de Registro</TableCell>
+                        <TableCell>Descripción</TableCell>
+                        <TableCell>Fecha</TableCell>
+                        <TableCell>Monto</TableCell>
+                        <TableCell>Acciones</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {dataResponseRegisters.map((row: any) => (
+                        <TableRow key={row._id}>
+                          <TableCell>{row._id}</TableCell>
+                          <TableCell>{row.tipoRegistro}</TableCell>
+                          <TableCell>{row.descRegistro}</TableCell>
+                          <TableCell>{row.fecha}</TableCell>
+                          <TableCell>{row.monto}</TableCell>
+                          <TableCell>
+                            <IconButton aria-label="edit">
+                              <EditIcon color="primary" />
+                            </IconButton>
+                            <IconButton aria-label="delete">
+                              <DeleteIcon color="secondary" />
+                            </IconButton>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              )}
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleCloseRegisters}>Accept</Button>
+            </DialogActions>
+          </Dialog>
+
+
+        </div>
       </div>
     </Container>
   );
