@@ -74,27 +74,38 @@ const TableAddRegister: FunctionComponent<TableConfigProps> = ({
   };
 
   const handleAdd = async () => {
-    if (descRegistro.trim() !== "") {
-      try {
-        const response = await addTypeValueMutation({
-          registro: {
-            tipoRegistro: typevalue,
-            descRegistro: descRegistro,
-            fecha: fecha,
-            monto: monto
-          },
-          token: token,
-        });
-
-        const newId = response.data._id;
-        const newItem = { _id: newId, subtype: addNewSubtype, typevalue: typevalue };
-        const updatedData = [...data, newItem];
-        setAddNewSubtype("");
-        updateData(updatedData, typevalue);
-        refetch();
-      } catch (error) {
-        console.error("Error al agregar el nuevo valor:", error);
+    if (!monto || !fecha || !descRegistro) {
+      if (!monto) {
+        toast.error("El campo de valor numérico es obligatorio.");
       }
+      if (!fecha) {
+        toast.error("Debes seleccionar una fecha válida.");
+      }
+      if (!descRegistro) {
+        toast.error("Debes seleccionar un tipo.");
+      }
+      return;
+    }
+
+    try {
+      const response = await addTypeValueMutation({
+        registro: {
+          tipoRegistro: typevalue,
+          descRegistro: descRegistro,
+          fecha: fecha,
+          monto: monto
+        },
+        token: token,
+      });
+
+      const newId = response.data._id;
+      const newItem = { _id: newId, subtype: addNewSubtype, typevalue: typevalue };
+      const updatedData = [...data, newItem];
+      setAddNewSubtype("");
+      updateData(updatedData, typevalue);
+      refetch();
+    } catch (error) {
+      console.error("Error al agregar el nuevo valor:", error);
     }
   };
 
@@ -230,7 +241,7 @@ const TableAddRegister: FunctionComponent<TableConfigProps> = ({
               name="iniciar"
               id="idIniciar"
               color="primary"
-              onClick={handleAdd} // Cambiar a onClick
+              onClick={handleAdd}
               fullWidth
               sx={{ marginTop: 2 }}
             >

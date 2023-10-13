@@ -52,11 +52,11 @@ export const registerApiSlice = apiSlice.injectEndpoints({
 
         // Obtiene todos los usuarios por algún criterio (por ejemplo, filtrados por rol)
         getRegistersByCriteria: builder.query({
-            query: (criteria, token) => ({
-                url: `${REGISTER_URL}/get-users`,
-                params: criteria, // Asume que criteria es un objeto con los parámetros de filtro
+            query: (object) => ({
+                url: `${REGISTER_URL}/get-registers/${object.data.idUsuario}`,
+                //params: object.data.userId, 
                 headers: {
-                    Authorization: `Bearer ${token}`,
+                    Authorization: `Bearer ${object.token}`,
                 },
             }),
         }),
