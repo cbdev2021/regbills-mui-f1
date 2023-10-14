@@ -34,7 +34,7 @@ export const registerApiSlice = apiSlice.injectEndpoints({
         // Elimina un usuario
         deleteRegister: builder.mutation({
             query: (object) => ({
-                url: `${REGISTER_URL}/delete-register/${object.userId}`,
+                url: `${REGISTER_URL}/delete-register/${object.registro.id}`,
                 method: 'DELETE',
                 headers: {
                     Authorization: `Bearer ${object.token}`,

@@ -15,7 +15,6 @@ import {
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import PaidIcon from "@mui/icons-material/Paid";
 import { useGetTypeValuesByUserIdQuery } from '../slices/typeValuesApiSlice';
-import { useAddRegisterMutation } from '../slices/registerApiSlice';
 import { useSelector } from "react-redux";
 import TableAddRegister from "./TableAddRegister";
 
@@ -35,6 +34,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 
 import { useGetRegistersByCriteriaQuery } from '../slices/registerApiSlice'; // Import the hook
+import { useAddRegisterMutation, useDeleteRegisterMutation } from '../slices/registerApiSlice';
 import { CircularProgress } from "@mui/material";
 
 
@@ -46,6 +46,8 @@ const AddRegister: FunctionComponent = () => {
   const [incomeData, setIncomeData] = useState([]);
   const [numericValue, setNumericValue] = useState("");
   const [addTypeValueMutation] = useAddRegisterMutation();
+  const [deleteTypeValueMutation] = useDeleteRegisterMutation();
+
 
   const userId = useSelector((state: any) => state.auth.userInfo._id);
   const token = useSelector((state: any) => state.auth.token);
@@ -202,6 +204,25 @@ const AddRegister: FunctionComponent = () => {
   //   }
   //   // Agrega el resto de los datos aquí
   // ];
+  const handleDelete = async (id: string) => {
+    try {
+      //await deleteTypeValueMutation(id);
+      await deleteTypeValueMutation(
+        {
+          registro: {
+            id: id
+          },
+          token: token
+        }
+      );
+
+      //const updatedData = data.filter((item) => item._id !== id);
+      // updateData(updatedData, typevalue); // Actualizar los datos en Config
+      refetch(); // Refrescar los datos desde la consulta
+    } catch (error) {
+      console.error("Error al eliminar el valor:", error);
+    }
+  };
 
   return (
     <Container component="main" maxWidth="xs" sx={{ marginTop: 10, height: '540.5px' }}>
@@ -366,7 +387,9 @@ const AddRegister: FunctionComponent = () => {
                               <IconButton aria-label="edit">
                                 <EditIcon color="primary" />
                               </IconButton>
-                              <IconButton aria-label="delete">
+                              <IconButton aria-label="delete"
+                                onClick={() => handleDelete(row._id)}
+                              >
                                 <DeleteIcon color="secondary" />
                               </IconButton>
                             </TableCell>
