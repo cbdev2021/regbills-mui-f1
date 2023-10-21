@@ -22,9 +22,9 @@ export const registerApiSlice = apiSlice.injectEndpoints({
         // Actualiza los datos de un usuario existente
         updateRegister: builder.mutation({
             query: (object) => ({
-                url: `${REGISTER_URL}/update-register/${object.userId}`,
+                url: `${REGISTER_URL}/update-register/${object.id}`,
                 method: 'PUT',
-                body: object.updatedUserData, // Asume que updatedUserData es el objeto con los datos actualizados
+                body: object.registro, // Asume que updatedUserData es el objeto con los datos actualizados
                 headers: {
                     Authorization: `Bearer ${object.token}`,
                 },
