@@ -47,16 +47,19 @@ const AddRegister: FunctionComponent = () => {
   const [numericValue, setNumericValue] = useState("");
   const [addTypeValueMutation] = useAddRegisterMutation();
   const [deleteTypeValueMutation] = useDeleteRegisterMutation();
+  const [rowId, setrowId] = useState("");
+  const [dataEdit, setDataEdit] = useState([]);
+  const [itemToUpdate, setItemToUpdate] = useState("");
 
 
   const userId = useSelector((state: any) => state.auth.userInfo._id);
   const token = useSelector((state: any) => state.auth.token);
-  const { data: dataResponse, refetch } = useGetTypeValuesByUserIdQuery({
+  const { data: dataResponse } = useGetTypeValuesByUserIdQuery({
     idUsuario: userId,
     token: token,
   });
 
-  const { data: dataResponseRegisters, isLoading } = useGetRegistersByCriteriaQuery({
+  const { data: dataResponseRegisters, isLoading, refetch } = useGetRegistersByCriteriaQuery({
     data: {
       idUsuario: userId,
     },
@@ -145,11 +148,13 @@ const AddRegister: FunctionComponent = () => {
   const [open, setOpen] = useState(false);
 
   const handleClickOpenRegisters = () => {
+    refetch();
     setOpen(true);
   };
 
   const handleCloseRegisters = () => {
     setOpen(false);
+    refetch();
   };
 
   // const data = [
@@ -224,6 +229,47 @@ const AddRegister: FunctionComponent = () => {
     }
   };
 
+  // const handleEdit = (title: string, rowId: string) => {
+  //   setDialogTitle(title);
+  //   setOpenDialog(true);
+  //   setrowId(rowId);
+  //   //setNumericValue("");    
+  // };
+
+  const handleEdit = (title: string, rowId: string) => {
+    setDialogTitle(title);
+    setOpenDialog(true);
+    setrowId(rowId);
+
+    // Agregar la lógica para determinar dataEdit
+    const itemToUpdate = dataResponseRegisters.find((item: { _id: string; }) => item._id === rowId);
+    console.log("Add register itemToUpdate: ");
+    console.log(itemToUpdate);
+
+    setItemToUpdate(itemToUpdate);
+
+    const dataEdit =
+      itemToUpdate.tipoRegistro === "Spent" ? spentData :
+        itemToUpdate.tipoRegistro === "Income" ? incomeData :
+          [];
+    // if(itemToUpdate.tipoRegistro == "Spent"){
+    //   console.log("spentData");
+    //   console.log(spentData);
+    // }
+    // else if(itemToUpdate.tipoRegistro == "Income"){
+    //   console.log("incomeData");
+    //   console.log(incomeData);
+    // }
+    // Almacenar dataEdit en el estado
+    refetch();
+
+    console.log("dataEdit: ");
+    console.log(dataEdit);
+    setDataEdit(dataEdit);
+  };
+
+
+
   return (
     <Container component="main" maxWidth="xs" sx={{ marginTop: 10, height: '540.5px' }}>
       <CssBaseline />
@@ -274,6 +320,14 @@ const AddRegister: FunctionComponent = () => {
                   token={token}
                   updateData={updateData}
                   refetch={refetch}
+                  // itemToUpdate={
+                  //   {
+                  //     monto:"",
+                  //     fecha: "",
+                  //     descRegistro:""
+                  //   }
+                  // }
+                  itemToUpdate={null}
                 />
               )}
               {dialogTitle === "Income" && (
@@ -286,6 +340,31 @@ const AddRegister: FunctionComponent = () => {
                   token={token}
                   updateData={updateData}
                   refetch={refetch}
+                  // itemToUpdate={
+                  //   {
+                  //     monto:"",
+                  //     fecha: "",
+                  //     descRegistro:""
+                  //   }
+                  // }
+                  itemToUpdate={null}
+                />
+              )}
+
+              {dialogTitle === "Edit Register" && (
+                <TableAddRegister
+                  userId={userId}
+                  title={dialogTitle}
+                  typevalue="Edit Register"
+                  data={dataEdit || []}
+                  //dataRegisters= {dataResponseRegisters}
+                  addTypeValueMutation={addTypeValueMutation}
+                  token={token}
+                  updateData={updateData}
+                  refetch={refetch}
+                  itemToUpdate={itemToUpdate}
+                //rowId={rowId}
+
                 />
               )}
             </DialogContent>
@@ -384,9 +463,22 @@ const AddRegister: FunctionComponent = () => {
                             <TableCell>{row.fecha}</TableCell>
                             <TableCell>{row.monto}</TableCell>
                             <TableCell>
-                              <IconButton aria-label="edit">
+                              {/* <IconButton aria-label="edit">
+                                <EditIcon color="primary" />
+                              </IconButton> */}
+
+                              <IconButton
+                                aria-label="edit"
+                                onClick={() => {
+                                  handleCloseRegisters();
+                                  handleEdit("Edit Register", row._id);
+                                }}
+                              >
+
                                 <EditIcon color="primary" />
                               </IconButton>
+
+
                               <IconButton aria-label="delete"
                                 onClick={() => handleDelete(row._id)}
                               >

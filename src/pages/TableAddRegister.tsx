@@ -30,6 +30,9 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { toast } from "react-toastify";
 
+import dayjs from 'dayjs';
+import 'dayjs/locale/es';
+
 interface TableConfigProps {
   userId: string;
   title: string;
@@ -42,6 +45,7 @@ interface TableConfigProps {
   token: string;
   updateData: (newData: any, dataType: string) => void;
   refetch: () => void;
+  itemToUpdate: any;
 }
 
 const TableAddRegister: FunctionComponent<TableConfigProps> = ({
@@ -53,16 +57,34 @@ const TableAddRegister: FunctionComponent<TableConfigProps> = ({
   token,
   updateData,
   refetch,
+  itemToUpdate
 }) => {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [newSubtype, setNewSubtype] = useState("");
   const [originalSubtype, setOriginalSubtype] = useState("");
   const [addNewSubtype, setAddNewSubtype] = useState("");
   const [isNumericKeyboardOpen, setIsNumericKeyboardOpen] = useState(true);
-  const [monto, setMonto] = useState("");
   const tableRef = useRef<HTMLTableElement | null>(null);
-  const [fecha, setFecha] = useState("");
-  const [descRegistro, setDescRegistro] = useState("");
+
+  const [descRegistro, setDescRegistro] = useState(
+    itemToUpdate && typevalue === "Edit Register" ? itemToUpdate.descRegistro : ""
+  );
+  const [monto, setMonto] = useState(
+    itemToUpdate && typevalue === "Edit Register" ? itemToUpdate.monto : ""
+  );
+  const [fecha, setFecha] = useState(
+    itemToUpdate && typevalue === "Edit Register" ? formatDate(itemToUpdate.fecha) : ""
+  );
+
+  console.log("formateDate: ");
+
+  function formatDate(dateString: string | number | Date) {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const day = date.getDate().toString().padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  }
 
   const handleEdit = (id: string) => {
     setEditingId(id);
@@ -90,7 +112,7 @@ const TableAddRegister: FunctionComponent<TableConfigProps> = ({
     try {
       const response = await addTypeValueMutation({
         registro: {
-          tipoRegistro: typevalue,
+          tipoRegistro: typevalue, //Mandatory
           descRegistro: descRegistro,
           fecha: fecha,
           monto: monto
@@ -123,7 +145,7 @@ const TableAddRegister: FunctionComponent<TableConfigProps> = ({
   };
 
   const handleNumericButtonClick = (number: number) => {
-    setMonto((prevValue) => prevValue + number.toString());
+    setMonto((prevValue: string) => prevValue + number.toString());
   };
 
   useEffect(() => {
@@ -204,7 +226,7 @@ const TableAddRegister: FunctionComponent<TableConfigProps> = ({
           {/* DatePicker */}
           <Grid item xs={12}>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker
+              {/* <DatePicker
                 label="Select Date"
                 value={fecha}
                 onChange={(newValue) => {
@@ -212,7 +234,20 @@ const TableAddRegister: FunctionComponent<TableConfigProps> = ({
                     setFecha(newValue);
                   }
                 }}
+              /> */}
+              <DatePicker
+                label="Select Date"
+                value={dayjs(fecha)}
+                onChange={(newValue) => {
+                  if (newValue !== null) {
+                    setFecha(newValue.format('MM-DD-YYYY'));
+                  }
+                }}
               />
+
+
+
+
             </LocalizationProvider>
           </Grid>
 
