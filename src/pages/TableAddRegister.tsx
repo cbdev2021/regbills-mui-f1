@@ -46,6 +46,7 @@ interface TableConfigProps {
   updateData: (newData: any, dataType: string) => void;
   refetch: () => void;
   itemToUpdate: any;
+
 }
 
 const TableAddRegister: FunctionComponent<TableConfigProps> = ({
@@ -66,6 +67,14 @@ const TableAddRegister: FunctionComponent<TableConfigProps> = ({
   const [isNumericKeyboardOpen, setIsNumericKeyboardOpen] = useState(true);
   const tableRef = useRef<HTMLTableElement | null>(null);
 
+  useEffect(() => {
+    // Este bloque de código se ejecutará cuando itemToUpdate cambie
+    console.log("itemToUpdate ha cambiado en TableAddRegister:", itemToUpdate);
+
+    // Realiza las acciones necesarias basadas en el cambio de itemToUpdate
+  }, [itemToUpdate]);
+
+
   const [descRegistro, setDescRegistro] = useState(
     itemToUpdate && typevalue === "Edit Register" ? itemToUpdate.descRegistro : ""
   );
@@ -76,7 +85,20 @@ const TableAddRegister: FunctionComponent<TableConfigProps> = ({
     itemToUpdate && typevalue === "Edit Register" ? formatDate(itemToUpdate.fecha) : ""
   );
 
-  console.log("formateDate: ");
+  useEffect(() => {
+    if (itemToUpdate && typevalue === "Edit Register") {
+      setDescRegistro(itemToUpdate.descRegistro);
+      setMonto(itemToUpdate.monto);
+      setFecha(formatDate(itemToUpdate.fecha));
+    } else {
+      // En caso de que itemToUpdate sea null u otra condición, puedes establecer los estados en un valor predeterminado
+      setDescRegistro("");
+      setMonto("");
+      setFecha("");
+    }
+  }, [itemToUpdate, typevalue]);
+
+
 
   function formatDate(dateString: string | number | Date) {
     const date = new Date(dateString);
@@ -202,6 +224,37 @@ const TableAddRegister: FunctionComponent<TableConfigProps> = ({
     }
   };
 
+  let addButton = null;
+  if (typevalue === "Spent" || typevalue === "Income") {
+    addButton = (
+      <Button
+        variant="contained"
+        name="iniciar"
+        id="idIniciar"
+        color="primary"
+        onClick={handleAdd}
+        fullWidth
+        sx={{ marginTop: 2 }}
+      >
+        Add
+      </Button>
+    );
+  } else if (typevalue === "Edit Register") {
+    addButton = (
+      <Button
+        variant="contained"
+        name="iniciar"
+        id="idIniciar"
+        color="primary"
+        //onClick={handleEdit}
+        fullWidth
+        sx={{ marginTop: 2 }}
+      >
+        Edit
+      </Button>
+    );
+  }
+
   return (
     <form onSubmit={handleAdd}>
       <div>
@@ -270,7 +323,7 @@ const TableAddRegister: FunctionComponent<TableConfigProps> = ({
           </Grid>
 
           {/* Botón para enviar el formulario */}
-          <Grid item xs={12}>
+          {/* <Grid item xs={12}>
             <Button
               variant="contained"
               name="iniciar"
@@ -282,7 +335,15 @@ const TableAddRegister: FunctionComponent<TableConfigProps> = ({
             >
               Add
             </Button>
+          </Grid> */}
+
+          <Grid item xs={12}>
+            {addButton}
           </Grid>
+
+
+
+
         </Grid>
       </div>
 

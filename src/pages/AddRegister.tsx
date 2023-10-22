@@ -51,6 +51,10 @@ const AddRegister: FunctionComponent = () => {
   const [dataEdit, setDataEdit] = useState([]);
   const [itemToUpdate, setItemToUpdate] = useState("");
 
+  useEffect(() => {
+    //console.log("itemToUpdate ha cambiado:", itemToUpdate);  
+  }, [itemToUpdate]);
+
 
   const userId = useSelector((state: any) => state.auth.userInfo._id);
   const token = useSelector((state: any) => state.auth.token);
