@@ -29,6 +29,8 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { toast } from "react-toastify";
+import { useUpdateRegisterMutation } from '../slices/registerApiSlice';
+
 
 import dayjs from 'dayjs';
 import 'dayjs/locale/es';
@@ -66,6 +68,7 @@ const TableAddRegister: FunctionComponent<TableConfigProps> = ({
   const [addNewSubtype, setAddNewSubtype] = useState("");
   const [isNumericKeyboardOpen, setIsNumericKeyboardOpen] = useState(true);
   const tableRef = useRef<HTMLTableElement | null>(null);
+  const [updateTypeValue] = useUpdateRegisterMutation();
 
   useEffect(() => {
     // Este bloque de código se ejecutará cuando itemToUpdate cambie
@@ -108,14 +111,14 @@ const TableAddRegister: FunctionComponent<TableConfigProps> = ({
     return `${year}-${month}-${day}`;
   }
 
-  const handleEdit = (id: string) => {
-    setEditingId(id);
-    const currentItem = data.find((item) => item._id === id);
-    if (currentItem) {
-      setNewSubtype(currentItem.subtype);
-      setOriginalSubtype(currentItem.subtype);
-    }
-  };
+  // const handleEdit = (id: string) => {
+  //   setEditingId(id);
+  //   const currentItem = data.find((item) => item._id === id);
+  //   if (currentItem) {
+  //     setNewSubtype(currentItem.subtype);
+  //     setOriginalSubtype(currentItem.subtype);
+  //   }
+  // };
 
   const handleAdd = async () => {
     if (!monto || !fecha || !descRegistro) {
@@ -224,6 +227,65 @@ const TableAddRegister: FunctionComponent<TableConfigProps> = ({
     }
   };
 
+  const handleEdit = async () => {
+
+    // if (editMode) {
+    // Realiza la actualización del registro usando useUpdateRegisterMutation
+    try {
+
+      //const id = "6524d7308733a750efb0012b";
+      //const id = rowId;
+
+      //const itemToUpdate = dataRegisters.find((item) => item._id === id);
+
+      console.log("itemToUpdate");
+      console.log(itemToUpdate);
+
+      if (!itemToUpdate) {
+        console.error("Elemento no encontrado para actualizar");
+        return;
+      }
+
+      const updatedItem = {
+        tipoRegistro: itemToUpdate.tipoRegistro,
+        descRegistro: descRegistro,
+        fecha: fecha,
+        monto: monto
+      };
+
+      // useUpdateRegisterMutation(
+      //   {
+      //     datos: {
+      //       id: id,
+      //       registro: updatedItem,
+      //       token: token
+      //     }
+      //   }
+      // );
+
+      await updateTypeValue(
+        {
+          id: itemToUpdate._id,
+          registro: updatedItem,
+          token: token
+        }
+      );
+
+      // Realiza las acciones necesarias después de la edición
+
+      //setEditMode(false);
+    } catch (error) {
+      console.error("Error al editar el registro:", error);
+    }
+    // } else {
+    //   // Realiza la adición de un nuevo registro
+    //   // Resto del código para agregar un nuevo registro
+    // }
+
+  };
+
+
+
   let addButton = null;
   if (typevalue === "Spent" || typevalue === "Income") {
     addButton = (
@@ -246,7 +308,7 @@ const TableAddRegister: FunctionComponent<TableConfigProps> = ({
         name="iniciar"
         id="idIniciar"
         color="primary"
-        //onClick={handleEdit}
+        onClick={handleEdit}
         fullWidth
         sx={{ marginTop: 2 }}
       >
@@ -254,6 +316,8 @@ const TableAddRegister: FunctionComponent<TableConfigProps> = ({
       </Button>
     );
   }
+
+
 
   return (
     <form onSubmit={handleAdd}>
