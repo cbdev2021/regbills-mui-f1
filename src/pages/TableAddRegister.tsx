@@ -101,14 +101,23 @@ const TableAddRegister: FunctionComponent<TableConfigProps> = ({
     }
   }, [itemToUpdate, typevalue]);
 
-
+  // function formatDate(dateString: string | number | Date) {
+  //   const date = new Date(dateString);
+  //   const year = date.getFullYear();
+  //   //const month = (date.getMonth() + 1).toString().padStart(2, "0");
+  //   const month = (date.getMonth() + 1).toString().padStart(2, "0");
+  //   const day = date.getDate().toString().padStart(2, "0");
+  //   //return `${year}-${month}-${day}`;
+  //   return `${year}/${month}/${day}`;
+  // }
 
   function formatDate(dateString: string | number | Date) {
     const date = new Date(dateString);
-    const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, "0");
-    const day = date.getDate().toString().padStart(2, "0");
-    return `${year}-${month}-${day}`;
+    date.setUTCHours(0, 0, 0, 0); // Forzar la zona horaria a UTC
+    const year = date.getUTCFullYear();
+    const month = (date.getUTCMonth() + 1).toString().padStart(2, "0");
+    const day = date.getUTCDate().toString().padStart(2, "0");
+    return `${year}/${month}/${day}`;
   }
 
   // const handleEdit = (id: string) => {
@@ -357,13 +366,11 @@ const TableAddRegister: FunctionComponent<TableConfigProps> = ({
                 value={dayjs(fecha)}
                 onChange={(newValue) => {
                   if (newValue !== null) {
-                    setFecha(newValue.format('MM-DD-YYYY'));
+                    //setFecha(newValue.format('MM-DD-YYYY'));
+                    setFecha(newValue.format('DD-MM-YYYY'));
                   }
                 }}
               />
-
-
-
 
             </LocalizationProvider>
           </Grid>
