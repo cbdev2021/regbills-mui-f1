@@ -37,6 +37,24 @@ import { useGetRegistersByCriteriaQuery } from '../slices/registerApiSlice'; // 
 import { useAddRegisterMutation, useDeleteRegisterMutation } from '../slices/registerApiSlice';
 import { CircularProgress } from "@mui/material";
 
+function filterRecordsByMonthAndYear(records: any[], targetMonth: number, targetYear: number) {
+  return records.filter((record: { fecha: string | number | Date; }) => {
+    const recordDate = new Date(record.fecha);
+    const recordMonth = recordDate.getMonth();
+    const recordYear = recordDate.getFullYear();
+    return recordMonth === targetMonth && recordYear === targetYear;
+  });
+}
+
+type Record = {
+  _id: string;
+  tipoRegistro: string;
+  descRegistro: string;
+  fecha: string;
+  monto: number;
+  // Otros campos de tus registros
+};
+
 
 
 const AddRegister: FunctionComponent = () => {
@@ -50,6 +68,10 @@ const AddRegister: FunctionComponent = () => {
   const [rowId, setrowId] = useState("");
   const [dataEdit, setDataEdit] = useState([]);
   const [itemToUpdate, setItemToUpdate] = useState("");
+  //const [filteredRecords, setFilteredRecords] = useState([]);
+  //const [filtered, setFiltered] = useState<Record[]>([]);
+  const [filteredRecords, setFilteredRecords] = useState<Record[]>([]);
+
 
   useEffect(() => {
     //console.log("itemToUpdate ha cambiado:", itemToUpdate);  
@@ -71,7 +93,6 @@ const AddRegister: FunctionComponent = () => {
   });
 
   const [loading, setLoading] = useState(true);
-
 
   useEffect(() => {
     if (dataResponse) {
@@ -272,7 +293,12 @@ const AddRegister: FunctionComponent = () => {
     setDataEdit(dataEdit);
   };
 
-
+  useEffect(() => {
+    if (dataResponseRegisters) {
+      const filtered = filterRecordsByMonthAndYear(dataResponseRegisters, currentMonth, currentYear);
+      setFilteredRecords(filtered);
+    }
+  }, [dataResponseRegisters, currentMonth, currentYear]);
 
   return (
     <Container component="main" maxWidth="xs" sx={{ marginTop: 10, height: '540.5px' }}>
@@ -412,39 +438,6 @@ const AddRegister: FunctionComponent = () => {
               {isLoading ? (
                 <CircularProgress />
               ) : (
-                // <TableContainer component={Paper} style={{ maxHeight: "70vh", width: "100%" }}>
-                //   <Table>
-                //     <TableHead>
-                //       <TableRow>
-                //         {/* <TableCell>ID</TableCell> */}
-                //         <TableCell>Tipo de Registro</TableCell>
-                //         <TableCell>Descripción</TableCell>
-                //         <TableCell>Fecha</TableCell>
-                //         <TableCell>Monto</TableCell>
-                //         <TableCell>Acciones</TableCell>
-                //       </TableRow>
-                //     </TableHead>
-                //     <TableBody>
-                //       {dataResponseRegisters.map((row: any) => (
-                //         <TableRow key={row._id}>
-                //           {/* <TableCell>{row._id}</TableCell> */}
-                //           <TableCell>{row.tipoRegistro}</TableCell>
-                //           <TableCell>{row.descRegistro}</TableCell>
-                //           <TableCell>{row.fecha}</TableCell>
-                //           <TableCell>{row.monto}</TableCell>
-                //           <TableCell>
-                //             <IconButton aria-label="edit">
-                //               <EditIcon color="primary" />
-                //             </IconButton>
-                //             <IconButton aria-label="delete">
-                //               <DeleteIcon color="secondary" />
-                //             </IconButton>
-                //           </TableCell>
-                //         </TableRow>
-                //       ))}
-                //     </TableBody>
-                //   </Table>
-                // </TableContainer>
                 <TableContainer component={Paper} style={{ maxHeight: "70vh", width: "100%" }}>
                   <Table>
                     <TableHead>
@@ -457,20 +450,16 @@ const AddRegister: FunctionComponent = () => {
                         <TableCell>Acciones</TableCell>
                       </TableRow>
                     </TableHead>
+
                     <TableBody>
-                      {dataResponseRegisters ? (
-                        dataResponseRegisters.map((row: any) => (
+                      {filteredRecords.length > 0 ? (
+                        filteredRecords.map((row: any) => (
                           <TableRow key={row._id}>
-                            {/* <TableCell>{row._id}</TableCell> */}
                             <TableCell>{row.tipoRegistro}</TableCell>
                             <TableCell>{row.descRegistro}</TableCell>
                             <TableCell>{row.fecha}</TableCell>
                             <TableCell>{row.monto}</TableCell>
                             <TableCell>
-                              {/* <IconButton aria-label="edit">
-                                <EditIcon color="primary" />
-                              </IconButton> */}
-
                               <IconButton
                                 aria-label="edit"
                                 onClick={() => {
@@ -478,12 +467,10 @@ const AddRegister: FunctionComponent = () => {
                                   handleEdit("Edit Register", row._id);
                                 }}
                               >
-
                                 <EditIcon color="primary" />
                               </IconButton>
-
-
-                              <IconButton aria-label="delete"
+                              <IconButton
+                                aria-label="delete"
                                 onClick={() => handleDelete(row._id)}
                               >
                                 <DeleteIcon color="secondary" />
@@ -497,6 +484,8 @@ const AddRegister: FunctionComponent = () => {
                         </TableRow>
                       )}
                     </TableBody>
+
+
                   </Table>
                 </TableContainer>
 
