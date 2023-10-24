@@ -403,9 +403,6 @@ const TableAddRegister: FunctionComponent<TableConfigProps> = ({
             {addButton}
           </Grid>
 
-
-
-
         </Grid>
       </div>
 

@@ -1,20 +1,23 @@
-import React, { FunctionComponent, useState, useEffect } from "react";
-import styles from "./DataReg.module.css";
+import React, { FunctionComponent, useState } from "react";
 import { Container, CssBaseline, Typography, IconButton, Box, Tab, Tabs } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { PieChart } from "@mui/x-charts/PieChart";
 import { useSelector } from "react-redux";
 import { useGetRegistersByCriteriaQuery } from "../slices/registerApiSlice";
+import Switch from '@mui/material/Switch';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import PaidIcon from '@mui/icons-material/Paid';
 
 const DataReg: FunctionComponent = () => {
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
+  const [filterByType, setFilterByType] = useState('All');
 
   const userId = useSelector((state: any) => state.auth.userInfo._id);
   const token = useSelector((state: any) => state.auth.token);
 
-  const { data: dataResponseRegisters, isLoading, refetch } = useGetRegistersByCriteriaQuery({
+  const { data: dataResponseRegisters } = useGetRegistersByCriteriaQuery({
     data: {
       idUsuario: userId,
     },
@@ -54,21 +57,11 @@ const DataReg: FunctionComponent = () => {
     descRegistro: string;
     fecha: string;
     monto: number;
-    // Otros campos de tus registros
   };
-
-  // function filterRecordsByMonthAndYear(records: any[], targetMonth: number, targetYear: number) {
-  //   return records.filter((record: { fecha: string | number | Date; }) => {
-  //     const recordDate = new Date(record.fecha);
-  //     const recordMonth = recordDate.getMonth();
-  //     const recordYear = recordDate.getFullYear();
-  //     return recordMonth === targetMonth && recordYear === targetYear;
-  //   });
-  // }
 
   function filterRecordsByMonthAndYear(records: any[], targetMonth: number, targetYear: number) {
     if (!records) {
-      return []; // Devuelve un arreglo vacío si records es undefined o null
+      return [];
     }
   
     return records.filter((record) => {
@@ -78,7 +71,6 @@ const DataReg: FunctionComponent = () => {
       return recordMonth === targetMonth && recordYear === targetYear;
     });
   }
-  
 
   const handleTabClick = (event: React.SyntheticEvent, newValue: number) => {
     const [selectedMonth, selectedYear] = allDates[newValue].split(" ");
@@ -86,26 +78,24 @@ const DataReg: FunctionComponent = () => {
     setCurrentYear(Number(selectedYear));
   };
 
-  // Calcular la suma de los valores en dataResponseRegisters
   let sumaDeValores = 0;
   if (dataResponseRegisters) {
     sumaDeValores = dataResponseRegisters.reduce((total: any, item: { monto: any; }) => total + item.monto, 0);
   }
 
-  // Filtrar registros del mes seleccionado
   const registrosDelMesSeleccionado = filterRecordsByMonthAndYear(dataResponseRegisters, currentMonth, currentYear);
 
-  // Calcular la suma de los valores del mes seleccionado
   let sumaDeValoresDelMes = 0;
   if (registrosDelMesSeleccionado) {
     sumaDeValoresDelMes = registrosDelMesSeleccionado.reduce((total: any, item: { monto: any; }) => total + item.monto, 0);
   }
 
-  // Crear la serie de datos para el Pie Chart con los valores del mes seleccionado
   const pieChartData = registrosDelMesSeleccionado.map((item: { monto: any; descRegistro: any }) => ({
     value: item.monto,
     descRegistro: item.descRegistro,
   }));
+
+  const registrosFiltrados = filterByType === 'All' ? registrosDelMesSeleccionado : registrosDelMesSeleccionado.filter((registro) => registro.tipoRegistro === filterByType);
 
   return (
     <Container component="main" maxWidth="xs" sx={{ marginTop: 10, height: "883px" }}>
@@ -114,6 +104,17 @@ const DataReg: FunctionComponent = () => {
         <Typography variant="h5" align="center" gutterBottom>
           Data
         </Typography>
+
+        <Box display="flex" alignItems="center" justifyContent="center">
+        <ShoppingCartIcon />
+          <Switch
+            checked={filterByType === 'Income'}
+            onChange={(event) => setFilterByType(event.target.checked ? 'Income' : 'Spent')}
+            color="primary"
+            inputProps={{ 'aria-label': 'toggle type filter' }}
+          />          
+          <PaidIcon />
+        </Box>
 
         <Box display="flex" alignItems="center" justifyContent="center">
           <IconButton onClick={handlePreviousDate}>
@@ -136,27 +137,15 @@ const DataReg: FunctionComponent = () => {
           </IconButton>
         </Box>
 
-        {/* <Typography variant="h6">
-          Valor Total: {sumaDeValores}
-        </Typography> */}
-
         <Typography variant="h6">
           Total Mes: {sumaDeValoresDelMes}
         </Typography>
 
-
-
-        {registrosDelMesSeleccionado.length > 0 && (
-          // <PieChart
-          //   series={[{ data: pieChartData }]}
-          //   width={400}
-          //   height={200}
-          // />
-
+        {registrosFiltrados.length > 0 && (
           <PieChart
             series={[
               {
-                data: registrosDelMesSeleccionado.map((item, index) => ({
+                data: registrosFiltrados.map((item, index) => ({
                   id: index,
                   value: item.monto,
                   label: item.descRegistro,
@@ -166,12 +155,9 @@ const DataReg: FunctionComponent = () => {
             width={400}
             height={200}
           />
-
-
-
         )}
 
-        <form className={styles.dataReg}></form>
+        <form></form>
       </div>
     </Container>
   );
