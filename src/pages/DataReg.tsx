@@ -57,14 +57,28 @@ const DataReg: FunctionComponent = () => {
     // Otros campos de tus registros
   };
 
+  // function filterRecordsByMonthAndYear(records: any[], targetMonth: number, targetYear: number) {
+  //   return records.filter((record: { fecha: string | number | Date; }) => {
+  //     const recordDate = new Date(record.fecha);
+  //     const recordMonth = recordDate.getMonth();
+  //     const recordYear = recordDate.getFullYear();
+  //     return recordMonth === targetMonth && recordYear === targetYear;
+  //   });
+  // }
+
   function filterRecordsByMonthAndYear(records: any[], targetMonth: number, targetYear: number) {
-    return records.filter((record: { fecha: string | number | Date; }) => {
+    if (!records) {
+      return []; // Devuelve un arreglo vacío si records es undefined o null
+    }
+  
+    return records.filter((record) => {
       const recordDate = new Date(record.fecha);
       const recordMonth = recordDate.getMonth();
       const recordYear = recordDate.getFullYear();
       return recordMonth === targetMonth && recordYear === targetYear;
     });
   }
+  
 
   const handleTabClick = (event: React.SyntheticEvent, newValue: number) => {
     const [selectedMonth, selectedYear] = allDates[newValue].split(" ");
