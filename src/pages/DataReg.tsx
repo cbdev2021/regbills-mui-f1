@@ -85,17 +85,17 @@ const DataReg: FunctionComponent = () => {
 
   const registrosDelMesSeleccionado = filterRecordsByMonthAndYear(dataResponseRegisters, currentMonth, currentYear);
 
+  const tipoFiltrado = filterByType === 'All' ? registrosDelMesSeleccionado : registrosDelMesSeleccionado.filter((registro) => registro.tipoRegistro === filterByType);
+
   let sumaDeValoresDelMes = 0;
-  if (registrosDelMesSeleccionado) {
-    sumaDeValoresDelMes = registrosDelMesSeleccionado.reduce((total: any, item: { monto: any; }) => total + item.monto, 0);
+  if (tipoFiltrado) {
+    sumaDeValoresDelMes = tipoFiltrado.reduce((total: any, item: { monto: any; }) => total + item.monto, 0);
   }
 
-  const pieChartData = registrosDelMesSeleccionado.map((item: { monto: any; descRegistro: any }) => ({
+  const pieChartData = tipoFiltrado.map((item: { monto: any; descRegistro: any }) => ({
     value: item.monto,
     descRegistro: item.descRegistro,
   }));
-
-  const registrosFiltrados = filterByType === 'All' ? registrosDelMesSeleccionado : registrosDelMesSeleccionado.filter((registro) => registro.tipoRegistro === filterByType);
 
   return (
     <Container component="main" maxWidth="xs" sx={{ marginTop: 10, height: "883px" }}>
@@ -106,7 +106,7 @@ const DataReg: FunctionComponent = () => {
         </Typography>
 
         <Box display="flex" alignItems="center" justifyContent="center">
-        <ShoppingCartIcon />
+          <ShoppingCartIcon />
           <Switch
             checked={filterByType === 'Income'}
             onChange={(event) => setFilterByType(event.target.checked ? 'Income' : 'Spent')}
@@ -141,16 +141,16 @@ const DataReg: FunctionComponent = () => {
           Total Mes: {sumaDeValoresDelMes}
         </Typography>
 
-        {registrosFiltrados.length > 0 && (
+        {tipoFiltrado.length > 0 && (
           <PieChart
             series={[
               {
-                data: registrosFiltrados.map((item, index) => ({
+                data: tipoFiltrado.map((item, index) => ({
                   id: index,
                   value: item.monto,
                   label: item.descRegistro,
                 })),
-              },
+              }
             ]}
             width={400}
             height={200}
