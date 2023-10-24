@@ -126,6 +126,10 @@ const DataReg: FunctionComponent = () => {
           Valor Total: {sumaDeValores}
         </Typography> */}
 
+        <Typography variant="h6">
+          Total Mes: {sumaDeValoresDelMes}
+        </Typography>
+
 
 
         {registrosDelMesSeleccionado.length > 0 && (
@@ -152,9 +156,6 @@ const DataReg: FunctionComponent = () => {
 
 
         )}
-        <Typography variant="h6">
-          Valor del Mes: {sumaDeValoresDelMes}
-        </Typography>
 
         <form className={styles.dataReg}></form>
       </div>
