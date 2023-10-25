@@ -63,7 +63,7 @@ const DataReg: FunctionComponent = () => {
     if (!records) {
       return [];
     }
-  
+
     return records.filter((record) => {
       const recordDate = new Date(record.fecha);
       const recordMonth = recordDate.getMonth();
@@ -78,24 +78,54 @@ const DataReg: FunctionComponent = () => {
     setCurrentYear(Number(selectedYear));
   };
 
-  let sumaDeValores = 0;
-  if (dataResponseRegisters) {
-    sumaDeValores = dataResponseRegisters.reduce((total: any, item: { monto: any; }) => total + item.monto, 0);
-  }
+  const getRandomColor = () => {
+    const colors = ['#00796B', '#3F51B5', '#795548', '#2196F3', '#673AB7']; // Colores medianamente oscuros
+    const randomIndex = Math.floor(Math.random() * colors.length);
+    return colors[randomIndex];
+  };
 
-  const registrosDelMesSeleccionado = filterRecordsByMonthAndYear(dataResponseRegisters, currentMonth, currentYear);
+  const createList = (title: string, data: any[]) => {
+    return (
+      <div style={{ flex: '50%', paddingRight: '10px' }}>
+        <Typography variant="h6" style={{ textAlign: 'left' }}>
+          {title}
+          <ul style={{ listStyle: 'none', paddingLeft: '20px' }}>
+            {data.map((item: any, index: number) => (
+              <li key={index} style={{ color: getRandomColor() }}>
+                {item.descRegistro}
+              </li>
+            ))}
+          </ul>
+        </Typography>
+      </div>
+    );
+  };
 
-  const tipoFiltrado = filterByType === 'All' ? registrosDelMesSeleccionado : registrosDelMesSeleccionado.filter((registro) => registro.tipoRegistro === filterByType);
+  const filterType = (type: string) => {
+    const registrosDelMesSeleccionado = filterRecordsByMonthAndYear(dataResponseRegisters, currentMonth, currentYear);
+    return type === 'All' ? registrosDelMesSeleccionado : registrosDelMesSeleccionado.filter((registro) => registro.tipoRegistro === type);
+  };
 
-  let sumaDeValoresDelMes = 0;
-  if (tipoFiltrado) {
-    sumaDeValoresDelMes = tipoFiltrado.reduce((total: any, item: { monto: any; }) => total + item.monto, 0);
-  }
-
-  const pieChartData = tipoFiltrado.map((item: { monto: any; descRegistro: any }) => ({
-    value: item.monto,
-    descRegistro: item.descRegistro,
-  }));
+  const renderPieChart = (data: any) => {
+    if (data.length > 0) {
+      return (
+        <PieChart
+          series={[
+            {
+              data: data.map((item: { monto: any; descRegistro: any }, index: number) => ({
+                id: index,
+                value: item.monto,
+                label: item.descRegistro,
+              })),
+            }
+          ]}
+          width={400}
+          height={200}
+        />
+      );
+    }
+    return null;
+  };
 
   return (
     <Container component="main" maxWidth="xs" sx={{ marginTop: 10, height: "883px" }}>
@@ -112,7 +142,7 @@ const DataReg: FunctionComponent = () => {
             onChange={(event) => setFilterByType(event.target.checked ? 'Income' : 'Spent')}
             color="primary"
             inputProps={{ 'aria-label': 'toggle type filter' }}
-          />          
+          />
           <PaidIcon />
         </Box>
 
@@ -138,26 +168,15 @@ const DataReg: FunctionComponent = () => {
         </Box>
 
         <Typography variant="h6">
-          Total Mes: {sumaDeValoresDelMes}
+          {/* Total Mes: {sumaDeValoresDelMes} */}
         </Typography>
 
-        {tipoFiltrado.length > 0 && (
-          <PieChart
-            series={[
-              {
-                data: tipoFiltrado.map((item, index) => ({
-                  id: index,
-                  value: item.monto,
-                  label: item.descRegistro,
-                })),
-              }
-            ]}
-            width={400}
-            height={200}
-          />
-        )}
+        {renderPieChart(filterType(filterByType))}
 
-        <form></form>
+        <div style={{ display: 'flex' }}>
+          {createList('Spent', filterType('Spent'))}
+          {createList('Income', filterType('Income'))}
+        </div>
       </div>
     </Container>
   );
