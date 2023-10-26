@@ -12,7 +12,8 @@ import PaidIcon from '@mui/icons-material/Paid';
 const DataReg: FunctionComponent = () => {
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
-  const [filterByType, setFilterByType] = useState('All');
+  //const [filterByType, setFilterByType] = useState('All');
+  const [filterByType, setFilterByType] = useState('Spent');
 
   const userId = useSelector((state: any) => state.auth.userInfo._id);
   const token = useSelector((state: any) => state.auth.token);
