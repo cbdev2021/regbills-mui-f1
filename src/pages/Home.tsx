@@ -1,5 +1,5 @@
-import React, { FunctionComponent, useState, useEffect } from "react";
-import { Container, CssBaseline, Typography, Dialog, DialogTitle, DialogContent, Button } from "@mui/material";
+import React, { FunctionComponent, useState } from "react";
+import { Container, CssBaseline, Typography, Dialog, DialogTitle, DialogContent, Button, FormControl, RadioGroup, FormControlLabel, Radio } from "@mui/material";
 import { useGetRegistersByCriteriaQuery } from '../slices/registerApiSlice';
 import { useSelector } from "react-redux";
 import { BarChart, XAxis, YAxis, Tooltip, Legend, Bar } from "recharts";
@@ -32,14 +32,112 @@ const Home: FunctionComponent = () => {
   };
 
   const [selectedItemAmountSum, setSelectedItemAmountSum] = useState<number | null>(null);
+  const [selectedFilter, setSelectedFilter] = useState("all");
+
+  // function groupRecordsByMonth(records: any[]) {
+  //   const monthlyData: Record<string, { month: string, total: number }> = {};
+
+  //   records.forEach((record) => {
+  //     const fecha = new Date(record.fecha);
+  //     const month = fecha.toLocaleString('default', { month: 'long' });
+
+  //     if (!monthlyData[month]) {
+  //       monthlyData[month] = {
+  //         month,
+  //         total: 0,
+  //       };
+  //     }
+
+  //     monthlyData[month].total += record.monto;
+  //   });
+
+  //   return Object.values(monthlyData);
+  // }
+
+  function renameFields(records: any[]) {
+    return records.map((record) => {
+      return { ...record, fecha_case: record.fecha, total: record.monto };
+    });
+  }
+
+
+
+
+  function groupRecordsByMonth(records: any[]) {
+    const monthlyData: Record<string, { fecha_case: string, total: number }> = {};
+
+    records.forEach((record) => {
+      const fecha = new Date(record.fecha);
+      const year = fecha.getFullYear(); // Obtiene el año de la fecha
+      const month = fecha.toLocaleString('default', { month: 'long' });
+
+      // Combina el año y el mes con un guion
+      const monthYear = `${month} - ${year}`;
+
+      if (!monthlyData[monthYear]) {
+        monthlyData[monthYear] = {
+          fecha_case: monthYear,
+          total: 0,
+        };
+      }
+
+      monthlyData[monthYear].total += record.monto;
+    });
+
+    return Object.values(monthlyData);
+  }
+
+  function groupRecordsByYear(records: any[]) {
+    const yearlyData: Record<string, { fecha_case: string, total: number }> = {};
+
+    records.forEach((record) => {
+      const fecha = new Date(record.fecha);
+      const fecha_case = fecha.getFullYear().toString(); // Obtiene el año de la fecha como una cadena
+
+      if (!yearlyData[fecha_case]) {
+        //yearlyData[year] = {
+        yearlyData[fecha_case] = {    //month es el alias temp
+          fecha_case,
+          total: 0,
+        };
+      }
+
+      yearlyData[fecha_case].total += record.monto;
+    });
+
+    return Object.values(yearlyData);
+  }
+
+  // const filteredDepositosRecords = dataResponseRegisters
+  //   ? dataResponseRegisters.filter((record: { descRegistro: string; }) => record.descRegistro === "Depositos")
+  //   : [];
+
+  const filteredDepositosRecords = dataResponseRegisters
+    ? dataResponseRegisters
+      .filter((item: Registro) => selectedItem ? item.descRegistro === selectedItem.descRegistro : true)
+    : [];
+
+
+  console.log(filteredDepositosRecords);
+
+
+
+  // const filteredDepositosRecords = dataResponseRegisters
+  //   ? dataResponseRegisters.filter((record: { descRegistro: string; }) => selectedItem ? record.descRegistro === selectedItem.descRegistro : true)
+  //   : [];
+
+  //const filteredDataResponseRegisters = filteredDepositosRecords;
+  const filteredDataResponseRegisters = renameFields(filteredDepositosRecords);
+
+
+  const filteredDataResponseRegistersMonth = groupRecordsByMonth(filteredDepositosRecords);
+  const filteredDataResponseRegistersYear = groupRecordsByYear(filteredDepositosRecords);
 
   const calculateSumForSelectedItem = (descRegistro: string) => {
     if (dataResponseRegisters) {
       const sum = dataResponseRegisters
-        ? dataResponseRegisters
-            .filter((item: Registro) => item.descRegistro === descRegistro)
-            .reduce((total: number, item: Registro) => total + item.monto, 0)
-        : 0;
+        .filter((item: Registro) => item.descRegistro === descRegistro)
+        .reduce((total: number, item: Registro) => total + item.monto, 0);
       setSelectedItemAmountSum(sum);
     }
   };
@@ -81,6 +179,20 @@ const Home: FunctionComponent = () => {
     );
   };
 
+  const handleFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedValue = event.target.value;
+
+    if (selectedValue === "all") {
+      console.log("Filtro seleccionado: All");
+    } else if (selectedValue === "month") {
+      console.log("Filtro seleccionado: Month");
+    } else if (selectedValue === "year") {
+      console.log("Filtro seleccionado: Year");
+    }
+
+    setSelectedFilter(selectedValue);
+  };
+
   const filterUniqueByType = (type: string, data: any[] | undefined) => {
     if (!data) {
       return [];
@@ -96,10 +208,21 @@ const Home: FunctionComponent = () => {
     }, []);
   };
 
-  const filteredDataResponseRegisters = dataResponseRegisters
-    ? dataResponseRegisters
-        .filter((item: Registro) => selectedItem ? item.descRegistro === selectedItem.descRegistro : true)
-    : [];
+  const getDataForSelectedFilter = () => {
+    if (selectedFilter === 'all') {
+      //return filteredDepositosRecords;
+      return filteredDataResponseRegisters;
+
+    } else if (selectedFilter === 'month') {
+      return filteredDataResponseRegistersMonth;
+    } else if (selectedFilter === 'year') {
+      return filteredDataResponseRegistersYear;
+    } else {
+      // Si selectedFilter no coincide con 'all', 'month' ni 'year', puedes manejarlo de la manera que desees.
+      return [];
+    }
+  };
+
 
   return (
     <Container component="main" maxWidth="xs" sx={{ marginTop: 10, height: "883px" }}>
@@ -108,6 +231,21 @@ const Home: FunctionComponent = () => {
         <Typography variant="h5" align="center" gutterBottom>
           Data
         </Typography>
+
+        <FormControl component="fieldset">
+          <RadioGroup
+            aria-label="filter"
+            name="filter"
+            value={selectedFilter}
+            onChange={handleFilterChange}
+            row
+          >
+            <FormControlLabel value="all" control={<Radio />} label="All" />
+            <FormControlLabel value="month" control={<Radio />} label="Month" />
+            <FormControlLabel value="year" control={<Radio />} label="Year" />
+          </RadioGroup>
+        </FormControl>
+
         <div style={{ display: 'flex' }}>
           {createList('Spent', dataResponseRegisters)}
           {createList('Income', dataResponseRegisters)}
@@ -122,12 +260,15 @@ const Home: FunctionComponent = () => {
               {selectedItemAmountSum !== null && (
                 <div>
                   <Typography variant="h6">Total Amount: {selectedItemAmountSum}</Typography>
-                  <BarChart width={400} height={300} data={filteredDataResponseRegisters}>
-                    <XAxis dataKey="fecha" />
-                    <YAxis dataKey="monto" />
+                  <BarChart width={400} height={300}
+                    // data={filteredDataResponseRegistersMonth}>
+                    data={getDataForSelectedFilter()}>
+                    {/* //<XAxis dataKey="month" /> */}
+                    <XAxis dataKey="fecha_case" />
+                    <YAxis dataKey="total" />
                     <Tooltip />
                     <Legend />
-                    <Bar dataKey="monto" fill="#8884d8" />
+                    <Bar dataKey="total" fill="#8884d8" />
                   </BarChart>
                 </div>
               )}
