@@ -108,17 +108,26 @@ const Home: FunctionComponent = () => {
     return Object.values(yearlyData);
   }
 
+
   // const filteredDepositosRecords = dataResponseRegisters
-  //   ? dataResponseRegisters.filter((record: { descRegistro: string; }) => record.descRegistro === "Depositos")
+  //   ? dataResponseRegisters
+  //     .filter((item: Registro) => selectedItem ? item.descRegistro === selectedItem.descRegistro : true)
   //   : [];
 
+  //es muy importante ya que una desventaja de mongo es devuelve desordenada la data
   const filteredDepositosRecords = dataResponseRegisters
-    ? dataResponseRegisters
-      .filter((item: Registro) => selectedItem ? item.descRegistro === selectedItem.descRegistro : true)
-    : [];
+  ? dataResponseRegisters
+      .filter((item: { descRegistro: string; }) => selectedItem ? item.descRegistro === selectedItem.descRegistro : true)
+      .sort((record1: { fecha: string | number | Date; }, record2: { fecha: string | number | Date; }) => {
+        const date1 = typeof record1.fecha === 'string' ? new Date(record1.fecha).getTime() : record1.fecha;
+        const date2 = typeof record2.fecha === 'string' ? new Date(record2.fecha).getTime() : record2.fecha;
+
+        return (date1 as number) - (date2 as number);
+      })
+  : [];
 
 
-  console.log(filteredDepositosRecords);
+ // console.log(filteredDepositosRecords);
 
 
 
@@ -229,7 +238,7 @@ const Home: FunctionComponent = () => {
       <CssBaseline />
       <div style={{ textAlign: "center" }}>
         <Typography variant="h5" align="center" gutterBottom>
-          Data
+          Home
         </Typography>
 
         <FormControl component="fieldset">
