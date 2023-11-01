@@ -27,3 +27,16 @@ body {
   /* Gaps */
   --gap-lgi: 19px;
 }
+
+.h7 {
+  font-size: 18px; /* Puedes ajustar el tamaño de fuente según tus preferencias */
+  /* Otros estilos personalizados, si es necesario */
+}
+
+.common-styles {
+  margin-top: 10px;
+  height: 540.5px;
+}
+
+
+

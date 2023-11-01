@@ -170,7 +170,9 @@ const Home: FunctionComponent = () => {
     const filteredData = filterUniqueByType(title, data);
     return (
       <div style={{ flex: '50%', paddingRight: '10px' }}>
-        <Typography variant="h6" style={{ textAlign: 'left' }}>
+        {/* <Typography variant="h7" style={{ textAlign: 'left' }}> */}
+        <Typography className="h7" style={{ textAlign: 'left' }}>
+        
           {title}
           <ul style={{ listStyle: 'none', paddingLeft: '20px' }}>
             {filteredData.map((item: any, index: number) => (
@@ -234,7 +236,8 @@ const Home: FunctionComponent = () => {
 
 
   return (
-    <Container component="main" maxWidth="xs" sx={{ marginTop: 10, height: "883px" }}>
+    // <Container component="main" maxWidth="xs" sx={{ marginTop: 10, height: '540.5px' }}>
+    <Container component="main" maxWidth="xs" className="common-styles"> 
       <CssBaseline />
       <div style={{ textAlign: "center" }}>
         <Typography variant="h5" align="center" gutterBottom>

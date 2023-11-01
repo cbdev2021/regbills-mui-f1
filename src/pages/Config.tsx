@@ -97,84 +97,85 @@ const Config: FunctionComponent = () => {
   };
 
   return (
-    <Container component="main" maxWidth="xs" sx={{ marginTop: 10, height: '540.5px' }}>
-      <CssBaseline />
-      <div>
-        <Typography variant="h5" align="center" gutterBottom>
-          Settings
-        </Typography>
+      // <Container component="main" maxWidth="xs" sx={{ marginTop: 10, height: '540.5px' }}>
+        <Container component="main" maxWidth="xs" className="common-styles">
+          <CssBaseline />
+          <div>
+            <Typography variant="h5" align="center" gutterBottom>
+              Settings
+            </Typography>
 
-        <form className={styles.config}>
-          <div className={styles.buttonsContainer}>
-            <Button
-              variant="contained"
-              color="primary"
-              className={styles.button}
-              onClick={() => handleClickOpen("Spent")}
-              startIcon={<ShoppingCartIcon />}
-            >
-              New Spent
-            </Button>
-            <Button
-              variant="contained"
-              color="secondary"
-              className={styles.button}
-              onClick={() => handleClickOpen("Income")}
-              startIcon={<PaidIcon />}
-            >
-              New Income
-            </Button>
+            <form className={styles.config}>
+              <div className={styles.buttonsContainer}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className={styles.button}
+                  onClick={() => handleClickOpen("Spent")}
+                  startIcon={<ShoppingCartIcon />}
+                >
+                  New Spent
+                </Button>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  className={styles.button}
+                  onClick={() => handleClickOpen("Income")}
+                  startIcon={<PaidIcon />}
+                >
+                  New Income
+                </Button>
+              </div>
+
+              <Dialog
+                open={openDialog}
+                TransitionComponent={Slide}
+                keepMounted
+                onClose={handleClose}
+                maxWidth="xs"
+                fullWidth
+              >
+                <DialogTitle>{dialogTitle}</DialogTitle>
+                <DialogContent style={{ maxHeight: 400, overflowY: 'scroll' }}>
+                  {dialogTitle === "Spent" && (
+                    <TableConfig
+                      userId={userId}
+                      title={dialogTitle}
+                      typevalue="Spent"
+                      data={spentData}
+                      updateTypeValue={updateTypeValue}
+                      addTypeValueMutation={addTypeValueMutation}
+                      deleteTypeValueMutation={deleteTypeValue}
+                      token={token}
+                      updateData={updateData}
+                      refetch={refetch}
+                    />
+                  )}
+                  {dialogTitle === "Income" && (
+                    <TableConfig
+                      userId={userId}
+                      title={dialogTitle}
+                      typevalue="Income"
+                      data={incomeData}
+                      updateTypeValue={updateTypeValue}
+                      addTypeValueMutation={addTypeValueMutation}
+                      deleteTypeValueMutation={deleteTypeValue}
+                      token={token}
+                      updateData={updateData}
+                      refetch={refetch}
+                    />
+                  )}
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleClose} color="primary">
+                    Cerrar
+                  </Button>
+                </DialogActions>
+              </Dialog>
+            </form>
           </div>
-
-          <Dialog
-            open={openDialog}
-            TransitionComponent={Slide}
-            keepMounted
-            onClose={handleClose}
-            maxWidth="xs"
-            fullWidth
-          >
-            <DialogTitle>{dialogTitle}</DialogTitle>
-            <DialogContent style={{ maxHeight: 400, overflowY: 'scroll' }}>
-              {dialogTitle === "Spent" && (
-                <TableConfig
-                  userId={userId}
-                  title={dialogTitle}
-                  typevalue="Spent"
-                  data={spentData}
-                  updateTypeValue={updateTypeValue}
-                  addTypeValueMutation={addTypeValueMutation}
-                  deleteTypeValueMutation={deleteTypeValue}
-                  token={token}
-                  updateData={updateData}
-                  refetch={refetch}
-                />
-              )}
-              {dialogTitle === "Income" && (
-                <TableConfig
-                  userId={userId}
-                  title={dialogTitle}
-                  typevalue="Income"
-                  data={incomeData}
-                  updateTypeValue={updateTypeValue}
-                  addTypeValueMutation={addTypeValueMutation}
-                  deleteTypeValueMutation={deleteTypeValue}
-                  token={token}
-                  updateData={updateData}
-                  refetch={refetch}
-                />
-              )}
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleClose} color="primary">
-                Cerrar
-              </Button>
-            </DialogActions>
-          </Dialog>
-        </form>
-      </div>
-    </Container>
-  );
+        </Container>
+        );
 };
 
-export default Config;
+        export default Config;

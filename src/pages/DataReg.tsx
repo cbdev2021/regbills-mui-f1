@@ -29,7 +29,7 @@ const DataReg: FunctionComponent = () => {
     "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
   ];
 
-  const years = Array.from ({ length: 3 }, (_: any, i: number) => currentYear - 1 + i);
+  const years = Array.from({ length: 3 }, (_: any, i: number) => currentYear - 1 + i);
 
   const allDates = years.map((year: any) => months.map((month) => `${month} ${year}`)).flat();
 
@@ -127,70 +127,71 @@ const DataReg: FunctionComponent = () => {
   }, []);
 
   return (
-    <Container component="main" maxWidth="xs" sx={{ marginTop: 10, height: "883px" }}>
-      <CssBaseline />
-      <div style={{ textAlign: "center" }}>
-        <Typography variant="h5" align="center" gutterBottom>
-          Data
-        </Typography>
+      // <Container component="main" maxWidth="xs" sx={{ marginTop: 10, height: '540.5px' }}>
+        <Container component="main" maxWidth="xs" className="common-styles">
+          <CssBaseline />
+          <div style={{ textAlign: "center" }}>
+            <Typography variant="h5" align="center" gutterBottom>
+              Data
+            </Typography>
 
-        <Box display="flex" alignItems="center" justifyContent="center">
-          <ShoppingCartIcon />
-          <Switch
-            checked={filterByType === 'Income'}
-            onChange={(event) => setFilterByType(event.target.checked ? 'Income' : 'Spent')}
-            color="primary"
-            inputProps={{ 'aria-label': 'toggle type filter' }}
-          />
-          <PaidIcon />
-        </Box>
+            <Box display="flex" alignItems="center" justifyContent="center">
+              <ShoppingCartIcon />
+              <Switch
+                checked={filterByType === 'Income'}
+                onChange={(event) => setFilterByType(event.target.checked ? 'Income' : 'Spent')}
+                color="primary"
+                inputProps={{ 'aria-label': 'toggle type filter' }}
+              />
+              <PaidIcon />
+            </Box>
 
-        <Box display="flex" alignItems="center" justifyContent="center">
-          <IconButton onClick={handlePreviousDate}>
-            <ArrowBackIcon />
-          </IconButton>
-          <Tabs
-            value={allDates.indexOf(`${months[currentMonth]} ${currentYear}`)}
-            onChange={handleTabClick}
-            indicatorColor="primary"
-            textColor="primary"
-            variant="scrollable"
-            scrollButtons="auto"
-          >
-            {allDates.map((date, index) => (
-              <Tab key={date} label={date} value={index} style={{ width: "100%" }} />
-            ))}
-          </Tabs>
-          <IconButton onClick={handleNextDate}>
-            <ArrowForwardIcon />
-          </IconButton>
-        </Box>
+            <Box display="flex" alignItems="center" justifyContent="center">
+              <IconButton onClick={handlePreviousDate}>
+                <ArrowBackIcon />
+              </IconButton>
+              <Tabs
+                value={allDates.indexOf(`${months[currentMonth]} ${currentYear}`)}
+                onChange={handleTabClick}
+                indicatorColor="primary"
+                textColor="primary"
+                variant="scrollable"
+                scrollButtons="auto"
+              >
+                {allDates.map((date, index) => (
+                  <Tab key={date} label={date} value={index} style={{ width: "100%" }} />
+                ))}
+              </Tabs>
+              <IconButton onClick={handleNextDate}>
+                <ArrowForwardIcon />
+              </IconButton>
+            </Box>
 
-        <Typography variant="h6">
-          Total Mes: {sumaDeValoresDelMes}
-        </Typography>
+            <Typography variant="h6">
+              Total Mes: {sumaDeValoresDelMes}
+            </Typography>
 
-        {tipoFiltrado.length > 0 && (
-          <PieChart
-            series={[
-              {
-                data: pieChartData.map((item: { value: any; descRegistro: any; fill: any; }, index: any) => ({
-                  id: index,
-                  value: item.value,
-                  label: item.descRegistro,
-                  fill: item.fill,
-                })),
-              },
-            ]}
-            width={400}
-            height={200}
-          />
-        )}
+            {tipoFiltrado.length > 0 && (
+              <PieChart
+                series={[
+                  {
+                    data: pieChartData.map((item: { value: any; descRegistro: any; fill: any; }, index: any) => ({
+                      id: index,
+                      value: item.value,
+                      label: item.descRegistro,
+                      fill: item.fill,
+                    })),
+                  },
+                ]}
+                width={400}
+                height={200}
+              />
+            )}
 
-        <form></form>
-      </div>
-    </Container>
-  );
+            <form></form>
+          </div>
+        </Container>
+        );
 };
 
-export default DataReg;
+        export default DataReg;
