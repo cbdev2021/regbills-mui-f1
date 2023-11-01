@@ -53,7 +53,7 @@ const Header = () => {
       <AppBar position="static" color="primary">
         <Toolbar sx={{ justifyContent: 'space-between' }}>
           <Typography variant="h6" component="div">
-            <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
+            <Link to="/home" style={{ textDecoration: 'none', color: 'inherit' }}>
               RegBills
             </Link>
           </Typography>
