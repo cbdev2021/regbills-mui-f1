@@ -301,7 +301,8 @@ const AddRegister: FunctionComponent = () => {
   }, [dataResponseRegisters, currentMonth, currentYear]);
 
   return (
-    <Container component="main" maxWidth="xs" sx={{ marginTop: 10, height: '540.5px' }}>
+    //<Container component="main" maxWidth="xs" sx={{ marginTop: 10, height: '540.5px' }}>
+    <Container component="main" maxWidth="xs" className="common-styles">
       <CssBaseline />
       <div>
         <Typography variant="h5" align="center" gutterBottom>
