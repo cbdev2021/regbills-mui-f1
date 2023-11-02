@@ -1,116 +1,86 @@
-import { Container, Grid, Typography } from "@mui/material";
+import { Container, Grid, Typography, Button, IconButton } from "@mui/material";
 import React from "react";
+import { useTheme } from "@mui/system";
+import { Facebook, Twitter, Instagram, LinkedIn } from "@mui/icons-material";
 
 const Footer = () => {
+  const theme = useTheme();
+
   return (
-    <>
-     <div style={{ backgroundColor: "#ABB2B9", width: "100%" }}>
+    <div style={{ backgroundColor: theme.palette.primary.main, padding: "40px 0", color: "black" }}>
+
       <Container>
-        <Grid container spcing={3}>
+        <Grid container spacing={3}>
           <Grid item xs={12} sm={6} md={4} lg={3}>
             <Typography variant="h4" sx={{ margin: "15px" }}>
-              Product
+              Categories
             </Typography>
             <Typography variant="h6" sx={{ margin: "15px" }}>
-              {" "}
-              Computer
+              Groceries
             </Typography>
             <Typography variant="h6" sx={{ margin: "15px" }}>
-              {" "}
-              CPU
+              Utilities
             </Typography>
             <Typography variant="h6" sx={{ margin: "15px" }}>
-              {" "}
-              Earphone
+              Dining
             </Typography>
             <Typography variant="h6" sx={{ margin: "15px" }}>
-              {" "}
-              Programming
-            </Typography>
-            <Typography variant="h6" sx={{ margin: "15px" }}>
-              {" "}
-              Javascript
+              Transportation
             </Typography>
           </Grid>
           <Grid item xs={12} sm={6} md={4} lg={3}>
             <Typography variant="h4" sx={{ margin: "15px" }}>
-              Service
+              Services
             </Typography>
             <Typography variant="h6" sx={{ margin: "15px" }}>
-              {" "}
-              Computer
+              Expenses Tracking
             </Typography>
             <Typography variant="h6" sx={{ margin: "15px" }}>
-              {" "}
-              CPU
+              Budget Planning
             </Typography>
             <Typography variant="h6" sx={{ margin: "15px" }}>
-              {" "}
-              Earphone
-            </Typography>
-            <Typography variant="h6" sx={{ margin: "15px" }}>
-              {" "}
-              Programming
-            </Typography>
-            <Typography variant="h6" sx={{ margin: "15px" }}>
-              {" "}
-              Javascript
+              Reports
             </Typography>
           </Grid>
           <Grid item xs={12} sm={6} md={4} lg={3}>
             <Typography variant="h4" sx={{ margin: "15px" }}>
-              About US
+              About Us
             </Typography>
             <Typography variant="h6" sx={{ margin: "15px" }}>
-              {" "}
-              Computer
+              Contact Us
             </Typography>
             <Typography variant="h6" sx={{ margin: "15px" }}>
-              {" "}
-              CPU
-            </Typography>
-            <Typography variant="h6" sx={{ margin: "15px" }}>
-              {" "}
-              Earphone
-            </Typography>
-            <Typography variant="h6" sx={{ margin: "15px" }}>
-              {" "}
-              Programming
-            </Typography>
-            <Typography variant="h6" sx={{ margin: "15px" }}>
-              {" "}
-              Javascript
+              Privacy Policy
             </Typography>
           </Grid>
           <Grid item xs={12} sm={6} md={4} lg={3}>
             <Typography variant="h4" sx={{ margin: "15px" }}>
-              Social Media
+              Connect With Us
             </Typography>
-            <Typography variant="h6" sx={{ margin: "15px" }}>
-              {" "}
-              Computer
-            </Typography>
-            <Typography variant="h6" sx={{ margin: "15px" }}>
-              {" "}
-              CPU
-            </Typography>
-            <Typography variant="h6" sx={{ margin: "15px" }}>
-              {" "}
-              Earphone
-            </Typography>
-            <Typography variant="h6" sx={{ margin: "15px" }}>
-              {" "}
-              Programming
-            </Typography>
-            <Typography variant="h6" sx={{ margin: "15px" }}>
-              {" "}
-              Javascript
-            </Typography>
+            <IconButton href="#" sx={{ color: "black" }}>
+              <Facebook />
+            </IconButton>
+            <IconButton href="#" sx={{ color: "black" }}>
+              <Twitter />
+            </IconButton>
+            <IconButton href="#" sx={{ color: "black" }}>
+              <Instagram />
+            </IconButton>
+            <IconButton href="#" sx={{ color: "black" }}>
+              <LinkedIn />
+            </IconButton>
+            <Button
+              variant="outlined"
+              color="secondary" // Color de botón secundario
+              href="#"
+              sx={{ color: "black", borderColor: "black", marginTop: "15px" }}
+            >
+              Subscribe
+            </Button>
           </Grid>
         </Grid>
       </Container>
-      </div> 
-    </>
+    </div>
   );
 };
 
