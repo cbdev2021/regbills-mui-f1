@@ -66,7 +66,7 @@ body {
 /* ejemplo en componentes Config AddRegister */
 
 /* ejemplo Login y Register */
-.yaTienesCuentaContainer {
+/* .yaTienesCuentaContainer {
   position: absolute;
   top: calc(50% + 169.5px);
   left: calc(50% - 103.5px);
@@ -90,6 +90,34 @@ body {
 
 .registrate {
   color: var(--color-black);
+} */
+
+/* ejemplo Login y Register */
+.yaTienesCuentaContainer {
+  position: absolute;
+  top: calc(50% + 100px); /* Ajusta la posición vertical aquí */
+  left: calc(50% - 104px); /* Ajusta la posición horizontal aquí */
+  text-align: center;
+  display: inline-block;
+  width: 210px;
+  height: 20px;
+  color: var(--color-fuchsia);
 }
+
+.noTienesCuentaContainer {
+  position: absolute;
+  top: calc(50% + 100px); /* Ajusta la posición vertical aquí */
+  left: calc(50% - 104px); /* Ajusta la posición horizontal aquí */
+  text-align: center;
+  display: inline-block;
+  width: 203px;
+  height: 28px;
+  color: var(--color-fuchsia);
+}
+
+.registrate {
+  color: var(--color-black);
+}
+
 
 
