@@ -15,7 +15,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useLogoutMutation } from '../slices/usersApiSlice';
 import { logout } from '../slices/authSlice';
-import { AccountCircle, ExitToApp } from '@mui/icons-material';
+import { AccountCircle } from '@mui/icons-material';
 import HomeIcon from '@mui/icons-material/Home';
 import FormatListNumberedRtlIcon from '@mui/icons-material/FormatListNumberedRtl';
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
@@ -25,7 +25,7 @@ const Header = () => {
   const { userInfo } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [anchorEl, setAnchorEl] = React.useState(false);
+  const [anchorEl, setAnchorEl] = React.useState(null);
 
   const [logoutApi, { isLoading: isLoggingOut }] = useLogoutMutation();
 
@@ -34,7 +34,7 @@ const Header = () => {
   };
 
   const handleClose = () => {
-    setAnchorEl(!anchorEl);
+    setAnchorEl(null);
   };
 
   const handleLogout = async () => {
@@ -49,7 +49,7 @@ const Header = () => {
   };
 
   return (
-    <header>
+    <header style={{ backgroundColor: 'black' }}>
       <AppBar position="static" color="primary">
         <Toolbar sx={{ justifyContent: 'space-between' }}>
           <Typography variant="h6" component="div">
@@ -155,7 +155,7 @@ const Header = () => {
           )}
           <Menu
             id="menu-appbar"
-            anchorEl={!anchorEl}
+            anchorEl={anchorEl}
             anchorOrigin={{
               vertical: 'top',
               horizontal: 'right',
