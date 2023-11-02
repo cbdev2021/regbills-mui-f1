@@ -1,5 +1,4 @@
 import React, { FunctionComponent, useEffect, useState } from "react";
-import styles from "./InicioSesion.module.css";
 import { login } from '../api/auth';
 import { toast } from 'react-toastify';
 import { setCredentials, setToken } from '../slices/authSlice';
@@ -36,18 +35,20 @@ const InicioSesion: FunctionComponent = () => {
       // console.log("res");
       // console.log(res);
 
-      dispatch(setCredentials({ userInfo: {
-                                            _id: res._id, 
-                                            name: res.name, 
-                                            email: res.email, 
-                                            token: res.token
-                                          }, 
-                                token: res.token }));
-    
-    console.log("inicio - userInfo.token:");    
-    console.log(userInfo);                         
-      
-    console.log("inicio - res.token:", res.token); // Agregar un console.log aquí                                    
+      dispatch(setCredentials({
+        userInfo: {
+          _id: res._id,
+          name: res.name,
+          email: res.email,
+          token: res.token
+        },
+        token: res.token
+      }));
+
+      console.log("inicio - userInfo.token:");
+      console.log(userInfo);
+
+      console.log("inicio - res.token:", res.token); // Agregar un console.log aquí                                    
 
       navigate('/home');
     } catch (err) {
@@ -57,65 +58,67 @@ const InicioSesion: FunctionComponent = () => {
   };
 
   return (
-    <Container component="main" maxWidth="xs" sx={{ marginTop: 10 }}>
-      <CssBaseline />
-      <div>
-        <Typography variant="h5" align="center" gutterBottom>
-          Iniciar Sesión
-        </Typography>
-        <form onSubmit={submitHandler} className={styles.iniciosesion}>
-          <TextField
-            color="primary"
-            variant="outlined"
-            type="text"
-            name="email"
-            id="email"
-            label="Correo electrónico"
-            placeholder="Ingrese su correo"
-            size="medium"
-            margin="normal"
-            fullWidth
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            autoFocus
-            autoComplete="email"
-          />
-          <TextField
-            color="primary"
-            variant="outlined"
-            type="password"
-            name="password"
-            id="password"
-            label="Contraseña"
-            placeholder="Ingresa tu contraseña"
-            size="medium"
-            margin="normal"
-            fullWidth
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            autoComplete="current-password"
-          />
-          <Button
-            variant="contained"
-            name="iniciar"
-            id="idIniciar"
-            color="primary"
-            type="submit"
-            fullWidth
-            sx={{ marginTop: 2 }}
-          >
-            Iniciar sesión
-          </Button>
-          <div className={styles.noTienesCuentaContainer}>
-            <span>¿No tienes cuenta? </span>
-            <Link to="/registro" className={styles.registrate}>
-              <b className={styles.registrate}>Registro</b>
-            </Link>
-          </div>
-        </form>
-      </div>
-    </Container>
-  );
+      //<Container component="main" maxWidth="xs" sx={{ marginTop: 10 }}>
+      //<Container component="main" maxWidth="xs" sx={{ marginTop: 10, height: '540.5px' }}>
+        <Container component="main" maxWidth="xs" className="common-styles">
+        <CssBaseline />
+        <div>
+          <Typography variant="h5" align="center" gutterBottom>
+            Iniciar Sesión
+          </Typography>
+          <form onSubmit={submitHandler} className={"form"}>
+            <TextField
+              color="primary"
+              variant="outlined"
+              type="text"
+              name="email"
+              id="email"
+              label="Correo electrónico"
+              placeholder="Ingrese su correo"
+              size="medium"
+              margin="normal"
+              fullWidth
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              autoFocus
+              autoComplete="email"
+            />
+            <TextField
+              color="primary"
+              variant="outlined"
+              type="password"
+              name="password"
+              id="password"
+              label="Contraseña"
+              placeholder="Ingresa tu contraseña"
+              size="medium"
+              margin="normal"
+              fullWidth
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              autoComplete="current-password"
+            />
+            <Button
+              variant="contained"
+              name="iniciar"
+              id="idIniciar"
+              color="primary"
+              type="submit"
+              fullWidth
+              sx={{ marginTop: 2 }}
+            >
+              Iniciar sesión
+            </Button>
+            <div className={"noTienesCuentaContainer"}>
+              <span>¿No tienes cuenta? </span>
+              <Link to="/registro" className={"registrate"}>
+                <b className={"registrate"}>Registro</b>
+              </Link>
+            </div>
+          </form>
+        </div>
+      </Container>
+      );
 };
 
-export default InicioSesion;
+      export default InicioSesion;

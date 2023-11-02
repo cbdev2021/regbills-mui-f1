@@ -58,7 +58,7 @@ const Header = () => {
             </Link>
           </Typography>
           {userInfo ? (
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', height: userInfo ? '64px' : '64px'}}>
               <Grid container spacing={1} alignItems="center">
                 <Grid item xs={3} sm={3}>
                   <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -139,7 +139,7 @@ const Header = () => {
               <AccountCircle />
             </IconButton>
           ) : (
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', height: userInfo ? '64px' : '64px'}}>
               <Button
                 color="inherit"
                 component={Link}

@@ -1,5 +1,4 @@
 import React, { FunctionComponent, useState, useEffect } from "react";
-import styles from "./Config.module.css";
 import {
   Container,
   CssBaseline,
@@ -105,12 +104,12 @@ const Config: FunctionComponent = () => {
               Settings
             </Typography>
 
-            <form className={styles.config}>
-              <div className={styles.buttonsContainer}>
+            <form className={"form"}>
+              <div className={"buttonsContainer"}>
                 <Button
                   variant="contained"
                   color="primary"
-                  className={styles.button}
+                
                   onClick={() => handleClickOpen("Spent")}
                   startIcon={<ShoppingCartIcon />}
                 >
@@ -119,7 +118,7 @@ const Config: FunctionComponent = () => {
                 <Button
                   variant="contained"
                   color="secondary"
-                  className={styles.button}
+                
                   onClick={() => handleClickOpen("Income")}
                   startIcon={<PaidIcon />}
                 >
