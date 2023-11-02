@@ -426,7 +426,8 @@ const AddRegister: FunctionComponent = () => {
                 <ArrowForwardIcon />
               </IconButton>
             </Box>
-            <Typography align="center">Selected Date: {months[currentMonth]} - {currentYear}</Typography>
+            {/* <Typography align="center">Selected Date: {months[currentMonth]} - {currentYear}</Typography> */}
+
           </Box>
         </form>
 

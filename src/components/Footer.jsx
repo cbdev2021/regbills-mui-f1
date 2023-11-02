@@ -7,7 +7,7 @@ const Footer = () => {
   const theme = useTheme();
 
   return (
-    <div style={{ backgroundColor: "black", padding: "40px 0", color: "#FFFFFFB3" }}>
+    <div style={{ backgroundColor: '#232323', padding: "40px 0", color: "#FFFFFFB3" }}>
 
       <Container>
         <Grid container spacing={3}>

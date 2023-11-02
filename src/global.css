@@ -44,8 +44,8 @@ body {
 .form {
   position: relative;
   /* fondo forms*/
-  /* background-color: var(--color-white); */
-  background-color:#f0f2f5;;
+  background-color: var(--color-white);
+  /* background-color:#f0f2f5;; */
 
   
   width: 100%;
