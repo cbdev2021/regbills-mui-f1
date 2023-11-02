@@ -18,6 +18,7 @@ import Profile from "./pages/Profile";
 import AddRegister from "./pages/AddRegister";
 import Config from "./pages/Config";
 import DataReg from "./pages/DataReg";
+import "./global.css"; // Importa el archivo CSS global
 
 
 function App() {
@@ -64,7 +65,7 @@ function App() {
     }
   }, [pathname]);
 
- 
+
   // return (
   //   <Routes>
   //     <Route path="/" element={<Home />} />
@@ -74,28 +75,30 @@ function App() {
   // );
   return (
     <>
-      <Header />
-      <ToastContainer />
+      <div className="app-container">
+        <Header />
+        <ToastContainer />
 
-      {/* Rutas y demás contenido */}
-      <Routes> 
-            
-        <Route path="/registro" element={<Registro />} />
-        <Route path="/iniciosesion" element={<InicioSesion />} />
+        {/* Rutas y demás contenido */}
+        <Routes>
 
-        <Route path='' element={<PrivateRoute />}>
-          {/* <Route path='/registro' element={<Registro />} /> */}
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/addregister" element={<AddRegister />} />
-          <Route path="/config" element={<Config />} />
-          <Route path="/datareg" element={<DataReg />} />
+          <Route path="/registro" element={<Registro />} />
+          <Route path="/iniciosesion" element={<InicioSesion />} />
 
-          
-        </Route>
-      </Routes>
+          <Route path='' element={<PrivateRoute />}>
+            {/* <Route path='/registro' element={<Registro />} /> */}
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/addregister" element={<AddRegister />} />
+            <Route path="/config" element={<Config />} />
+            <Route path="/datareg" element={<DataReg />} />
 
-      <Footer />
+
+          </Route>
+        </Routes>
+
+        <Footer />
+      </div>
 
 
     </>
