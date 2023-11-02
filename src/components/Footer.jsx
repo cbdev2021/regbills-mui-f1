@@ -7,7 +7,7 @@ const Footer = () => {
   const theme = useTheme();
 
   return (
-    <div style={{ backgroundColor: theme.palette.primary.main, padding: "40px 0", color: "black" }}>
+    <div style={{ backgroundColor: "black", padding: "40px 0", color: "#FFFFFFB3" }}>
 
       <Container>
         <Grid container spacing={3}>
@@ -57,23 +57,23 @@ const Footer = () => {
             <Typography variant="h4" sx={{ margin: "15px" }}>
               Connect With Us
             </Typography>
-            <IconButton href="#" sx={{ color: "black" }}>
+            <IconButton href="#" sx={{ color: "white" }}>
               <Facebook />
             </IconButton>
-            <IconButton href="#" sx={{ color: "black" }}>
+            <IconButton href="#" sx={{ color: "white" }}>
               <Twitter />
             </IconButton>
-            <IconButton href="#" sx={{ color: "black" }}>
+            <IconButton href="#" sx={{ color: "white" }}>
               <Instagram />
             </IconButton>
-            <IconButton href="#" sx={{ color: "black" }}>
+            <IconButton href="#" sx={{ color: "white" }}>
               <LinkedIn />
             </IconButton>
             <Button
               variant="outlined"
               color="secondary" // Color de botón secundario
               href="#"
-              sx={{ color: "black", borderColor: "black", marginTop: "15px" }}
+              sx={{ color: "white", borderColor: "white", marginTop: "15px" }}
             >
               Subscribe
             </Button>
