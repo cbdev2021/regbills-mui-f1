@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Container, TextField, Button, CssBaseline, Typography } from '@mui/material';
 import { toast } from 'react-toastify';
 import { useUpdateUserMutation } from '../slices/usersApiSlice';
@@ -74,10 +74,18 @@ const Profile = () => {
     }
   };
 
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsVisible(true);
+    }, 10);
+  }, []);
+
   return (
       //<Container component="main" maxWidth="xs" sx={{ marginTop: 10 }}>
       //<Container component="main" maxWidth="xs" sx={{ marginTop: 10, height: '540.5px' }}>
-        <Container component="main" maxWidth="xs" className="common-styles">
+        <Container component="main" maxWidth="xs" className={`fade-in-vertical ${isVisible ? 'active' : ''} common-styles`}>
         <CssBaseline />
         <div>
           <Typography variant="h5" align="center" gutterBottom>

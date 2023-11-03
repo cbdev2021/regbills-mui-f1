@@ -57,10 +57,18 @@ const InicioSesion: FunctionComponent = () => {
     }
   };
 
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsVisible(true);
+    }, 10);
+  }, []);
+
   return (
       //<Container component="main" maxWidth="xs" sx={{ marginTop: 10 }}>
       //<Container component="main" maxWidth="xs" sx={{ marginTop: 10, height: '540.5px' }}>
-        <Container component="main" maxWidth="xs" className="common-styles">
+        <Container component="main" maxWidth="xs" className={`fade-in-vertical ${isVisible ? 'active' : ''} common-styles`}>
         <CssBaseline />
         <div>
           <Typography variant="h5" align="center" gutterBottom>
