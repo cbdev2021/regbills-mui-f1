@@ -1,8 +1,9 @@
-import React, { FunctionComponent, useState } from "react";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import { Container, CssBaseline, Typography, Dialog, DialogTitle, DialogContent, Button, FormControl, RadioGroup, FormControlLabel, Radio } from "@mui/material";
 import { useGetRegistersByCriteriaQuery } from '../slices/registerApiSlice';
 import { useSelector } from "react-redux";
 import { BarChart, XAxis, YAxis, Tooltip, Legend, Bar } from "recharts";
+import { useLocation } from 'react-router-dom';
 
 const Home: FunctionComponent = () => {
   const userId = useSelector((state: any) => state.auth.userInfo._id);
@@ -234,10 +235,17 @@ const Home: FunctionComponent = () => {
     }
   };
 
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsVisible(true);
+    }, 10);
+  }, []);
 
   return (
     // <Container component="main" maxWidth="xs" sx={{ marginTop: 10, height: '540.5px' }}>
-    <Container component="main" maxWidth="xs" className="common-styles"> 
+    <Container component="main" maxWidth="xs" className={`fade-in-vertical ${isVisible ? 'active' : ''} common-styles`}> 
       <CssBaseline />
       <div style={{ textAlign: "center" }}>
         <Typography variant="h5" align="center" gutterBottom>

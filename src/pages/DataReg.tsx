@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState } from "react";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import { Container, CssBaseline, Typography, IconButton, Box, Tab, Tabs } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
@@ -126,9 +126,17 @@ const DataReg: FunctionComponent = () => {
     return result;
   }, []);
 
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsVisible(true);
+    }, 10);
+  }, []);
+
   return (
       // <Container component="main" maxWidth="xs" sx={{ marginTop: 10, height: '540.5px' }}>
-        <Container component="main" maxWidth="xs" className="common-styles">
+        <Container component="main" maxWidth="xs" className={`fade-in-vertical ${isVisible ? 'active' : ''} common-styles`}>
           <CssBaseline />
           <div style={{ textAlign: "center" }}>
             <Typography variant="h5" align="center" gutterBottom>

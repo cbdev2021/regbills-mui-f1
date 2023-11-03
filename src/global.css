@@ -124,5 +124,30 @@ body {
   color: var(--color-black);
 }
 
+/* effects */
+/* styles.css */
+/* global.css */
 
+.fade-in-horizontal {
+  opacity: 0;
+  transform: scaleX(0);
+  transition: opacity 0.25s ease-in-out, transform 0.25s ease-in-out;
+}
 
+.fade-in-horizontal.active {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+/* global.css */
+
+.fade-in-vertical {
+  opacity: 0;
+  transform: scaleY(0);
+  transition: opacity 0.25s ease-in-out, transform 0.25s ease-in-out;
+}
+
+.fade-in-vertical.active {
+  opacity: 1;
+  transform: scaleY(1);
+}
