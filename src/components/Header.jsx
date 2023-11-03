@@ -136,7 +136,12 @@ const Header = () => {
               onClick={handleMenu}
               color="inherit"
             >
-              <AccountCircle />
+              <div>
+                <AccountCircle />
+                <Typography variant="body2" align="center" color="inherit">
+                  {userInfo.name}
+                </Typography>
+              </div>
             </IconButton>
           ) : (
             <Box sx={{ display: 'flex', alignItems: 'center', height: userInfo ? '64px' : '64px' }}>
