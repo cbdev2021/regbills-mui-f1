@@ -61,7 +61,7 @@ const Header = () => {
             <Box sx={{ display: 'flex', alignItems: 'center', height: userInfo ? '64px' : '64px' }}>
               <Grid container spacing={1} alignItems="center">
                 <Grid item xs={3} sm={3}>
-                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                  {/* <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                     <IconButton
                       size="large"
                       aria-label="Home"
@@ -74,10 +74,56 @@ const Header = () => {
                     <Typography variant="caption" align="center">
                       Home
                     </Typography>
+                  </div> */}
+                  {/* <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <IconButton
+                      size="large"
+                      aria-label="Home"
+                      color="inherit"
+                      component={Link}
+                      to="/home"
+                      sx={{
+                        width: '64px', // Ancho cuadrado
+                        height: '64px', // Alto cuadrado
+                        borderRadius: '50%', // Botón circular
+                      }}
+                    >
+                      <div>
+                        <HomeIcon />
+                        <Typography variant="body2" align="center" color="inherit" sx={{ fontSize: '0.75rem' }}>
+                          Home
+                        </Typography>
+                      </div>
+                    </IconButton>
+                  </div> */}
+
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <IconButton
+                      size="large"
+                      aria-label="Home"
+                      color="inherit"
+                      component={Link}
+                      to="/home"
+                      sx={{
+                        width: '64px', // Ancho cuadrado
+                        height: '100%', // Alto del header
+                        borderRadius: '0', // Sin bordes redondos
+                        display: 'flex', // Para alinear el contenido verticalmente
+                        flexDirection: 'column', // Alinear contenido verticalmente
+                        alignItems: 'center', // Alinear contenido verticalmente
+                      }}
+                    >
+                      <div>
+                        <HomeIcon />
+                        <Typography variant="body2" align="center" color="inherit" sx={{ fontSize: '0.75rem' }}>
+                          Home
+                        </Typography>
+                      </div>
+                    </IconButton>
                   </div>
                 </Grid>
                 <Grid item xs={3} sm={3}>
-                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                  {/* <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                     <IconButton
                       size="large"
                       aria-label="Edit Note"
@@ -90,10 +136,34 @@ const Header = () => {
                     <Typography variant="caption" align="center">
                       Data
                     </Typography>
+                  </div> */}
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <IconButton
+                      size="large"
+                      aria-label="Home"
+                      color="inherit"
+                      component={Link}
+                      to="/datareg"
+                      sx={{
+                        width: '64px', // Ancho cuadrado
+                        height: '100%', // Alto del header
+                        borderRadius: '0', // Sin bordes redondos
+                        display: 'flex', // Para alinear el contenido verticalmente
+                        flexDirection: 'column', // Alinear contenido verticalmente
+                        alignItems: 'center', // Alinear contenido verticalmente
+                      }}
+                    >
+                      <div>
+                        <FormatListNumberedRtlIcon />
+                        <Typography variant="body2" align="center" color="inherit" sx={{ fontSize: '0.75rem' }}>
+                          Data
+                        </Typography>
+                      </div>
+                    </IconButton>
                   </div>
                 </Grid>
                 <Grid item xs={3} sm={3}>
-                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                  {/* <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                     <IconButton
                       size="large"
                       aria-label="Edit Note"
@@ -106,10 +176,34 @@ const Header = () => {
                     <Typography variant="caption" align="center">
                       Add
                     </Typography>
+                  </div> */}
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <IconButton
+                      size="large"
+                      aria-label="Home"
+                      color="inherit"
+                      component={Link}
+                      to="/addregister"
+                      sx={{
+                        width: '64px', // Ancho cuadrado
+                        height: '100%', // Alto del header
+                        borderRadius: '0', // Sin bordes redondos
+                        display: 'flex', // Para alinear el contenido verticalmente
+                        flexDirection: 'column', // Alinear contenido verticalmente
+                        alignItems: 'center', // Alinear contenido verticalmente
+                      }}
+                    >
+                      <div>
+                        <PlaylistAddIcon />
+                        <Typography variant="body2" align="center" color="inherit" sx={{ fontSize: '0.75rem' }}>
+                          Add
+                        </Typography>
+                      </div>
+                    </IconButton>
                   </div>
                 </Grid>
                 <Grid item xs={3} sm={3}>
-                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                  {/* <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                     <IconButton
                       size="large"
                       aria-label="Edit Note"
@@ -122,6 +216,30 @@ const Header = () => {
                     <Typography variant="caption" align="center">
                       Settings
                     </Typography>
+                  </div> */}
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <IconButton
+                      size="large"
+                      aria-label="Home"
+                      color="inherit"
+                      component={Link}
+                      to="/config"
+                      sx={{
+                        width: '64px', // Ancho cuadrado
+                        height: '100%', // Alto del header
+                        borderRadius: '0', // Sin bordes redondos
+                        display: 'flex', // Para alinear el contenido verticalmente
+                        flexDirection: 'column', // Alinear contenido verticalmente
+                        alignItems: 'center', // Alinear contenido verticalmente
+                      }}
+                    >
+                      <div>
+                        <SettingsIcon />
+                        <Typography variant="body2" align="center" color="inherit" sx={{ fontSize: '0.75rem' }}>
+                          Settings
+                        </Typography>
+                      </div>
+                    </IconButton>
                   </div>
                 </Grid>
               </Grid>
@@ -184,7 +302,7 @@ const Header = () => {
           </Menu>
         </Toolbar>
       </AppBar>
-    </header>
+    </header >
   );
 };
 
