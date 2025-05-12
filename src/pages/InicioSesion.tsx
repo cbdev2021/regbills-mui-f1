@@ -72,7 +72,7 @@ const InicioSesion: FunctionComponent = () => {
         <CssBaseline />
         <div>
           <Typography variant="h5" align="center" gutterBottom>
-            Iniciar Sesión
+          Log In
           </Typography>
           <form onSubmit={submitHandler} className={"form"}>
             <TextField
@@ -81,8 +81,8 @@ const InicioSesion: FunctionComponent = () => {
               type="text"
               name="email"
               id="email"
-              label="Correo electrónico"
-              placeholder="Ingrese su correo"
+              label="Email"
+              placeholder="Insert Email"
               size="medium"
               margin="normal"
               fullWidth
@@ -97,8 +97,8 @@ const InicioSesion: FunctionComponent = () => {
               type="password"
               name="password"
               id="password"
-              label="Contraseña"
-              placeholder="Ingresa tu contraseña"
+              label="Password"
+              placeholder="Insert Password"
               size="medium"
               margin="normal"
               fullWidth
@@ -115,12 +115,12 @@ const InicioSesion: FunctionComponent = () => {
               fullWidth
               sx={{ marginTop: 2 }}
             >
-              Iniciar sesión
+              Log In
             </Button>
             <div className={"noTienesCuentaContainer"}>
-              <span>¿No tienes cuenta? </span>
+              <span>You don't have an account? </span>
               <Link to="/registro" className={"registrate"}>
-                <b className={"registrate"}>Registro</b>
+                <b className={"registrate"}>Sign Up</b>
               </Link>
             </div>
           </form>

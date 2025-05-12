@@ -269,10 +269,10 @@ const Header = () => {
                 to="/registro"
                 sx={{ marginRight: '10px' }}
               >
-                Registro
+                Register
               </Button>
               <Button color="inherit" component={Link} to="/iniciosesion">
-                Iniciar sesión
+                Log In
               </Button>
             </Box>
           )}

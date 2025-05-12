@@ -69,7 +69,7 @@ const Registro: FunctionComponent = () => {
       <CssBaseline />
       <div>
         <Typography variant="h5" align="center" gutterBottom>
-          Registro
+        Sign Up
         </Typography>
 
         <form onSubmit={handleRegister} className={"form"}>
@@ -112,8 +112,8 @@ const Registro: FunctionComponent = () => {
             type="text"
             name="name"
             id="idName"
-            label="Nombre"
-            placeholder="Ingrese su nombre"
+            label="Name"
+            placeholder="Insert Name"
             size="medium"
             margin="normal"
             value={name}
@@ -128,8 +128,8 @@ const Registro: FunctionComponent = () => {
             type="text"
             name="email"
             id="idEmail"
-            label="Correo electrónico"
-            placeholder="Ingrese su correo"
+            label="Email"
+            placeholder="Insert Email"
             size="medium"
             margin="normal"
             value={email}
@@ -144,8 +144,8 @@ const Registro: FunctionComponent = () => {
             type="password"
             name="password"
             id="idPassword"
-            label="Contraseña"
-            placeholder="Ingresa tu contraseña"
+            label="Password"
+            placeholder="Insert Password"
             size="medium"
             margin="normal"
             value={password}
@@ -175,13 +175,13 @@ const Registro: FunctionComponent = () => {
             fullWidth
             sx={{ marginTop: 2 }}
           >
-            Crear cuenta
+            Sign Up
           </Button>
 
           <div className={"yaTienesCuentaContainer"}>
-            <span>¿Ya tienes cuenta? </span>
+            <span>You already have an account? </span>
             <Link to="/iniciosesion" className={"registrate"}>
-              <b className={"registrate"}>Iniciar sesión</b>
+              <b className={"registrate"}>Log In</b>
             </Link>
           </div>
 
