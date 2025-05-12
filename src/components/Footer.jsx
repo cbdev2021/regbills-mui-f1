@@ -13,37 +13,6 @@ const Footer = () => {
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6} md={4} lg={3}>
             <Typography variant="h4" sx={{ margin: "15px" }}>
-              Categories
-            </Typography>
-            <Typography variant="h6" sx={{ margin: "15px" }}>
-              Groceries
-            </Typography>
-            <Typography variant="h6" sx={{ margin: "15px" }}>
-              Utilities
-            </Typography>
-            <Typography variant="h6" sx={{ margin: "15px" }}>
-              Dining
-            </Typography>
-            <Typography variant="h6" sx={{ margin: "15px" }}>
-              Transportation
-            </Typography>
-          </Grid>
-          <Grid item xs={12} sm={6} md={4} lg={3}>
-            <Typography variant="h4" sx={{ margin: "15px" }}>
-              Services
-            </Typography>
-            <Typography variant="h6" sx={{ margin: "15px" }}>
-              Expenses Tracking
-            </Typography>
-            <Typography variant="h6" sx={{ margin: "15px" }}>
-              Budget Planning
-            </Typography>
-            <Typography variant="h6" sx={{ margin: "15px" }}>
-              Reports
-            </Typography>
-          </Grid>
-          <Grid item xs={12} sm={6} md={4} lg={3}>
-            <Typography variant="h4" sx={{ margin: "15px" }}>
               About Us
             </Typography>
             <Typography variant="h6" sx={{ margin: "15px" }}>
@@ -55,7 +24,34 @@ const Footer = () => {
           </Grid>
           <Grid item xs={12} sm={6} md={4} lg={3}>
             <Typography variant="h4" sx={{ margin: "15px" }}>
-              Connect With Us
+              Categories
+            </Typography>
+            <Typography variant="h6" sx={{ margin: "15px" }}>
+              Data
+            </Typography>
+            <Typography variant="h6" sx={{ margin: "15px" }}>
+              Settings
+            </Typography>
+
+          </Grid>
+          <Grid item xs={12} sm={6} md={4} lg={3}>
+            <Typography variant="h4" sx={{ margin: "15px" }}>
+              Services
+            </Typography>
+            <Typography variant="h6" sx={{ margin: "15px" }}>
+              Tools
+            </Typography>
+            <Typography variant="h6" sx={{ margin: "15px" }}>
+              Budget Planning
+            </Typography>
+            <Typography variant="h6" sx={{ margin: "15px" }}>
+              Reports
+            </Typography>
+          </Grid>
+
+          <Grid item xs={12} sm={6} md={4} lg={3}>
+            <Typography variant="h4" sx={{ margin: "15px" }}>
+              Follow Us
             </Typography>
             <IconButton href="#" sx={{ color: "white" }}>
               <Facebook />
