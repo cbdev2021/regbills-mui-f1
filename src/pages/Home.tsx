@@ -55,12 +55,35 @@ const Home: FunctionComponent = () => {
   //   return Object.values(monthlyData);
   // }
 
+
+  // function renameFields(records: any[]) {
+  //   return records.map((record) => {
+  //     return { ...record, fecha_case: record.fecha, total: record.monto };
+  //   });
+  // }
+
+  //formato de fechas
+  // function renameFields(records: any[]) {
+  //   return records.map((record) => {
+  //     const fechaObj = new Date(record.fecha);
+  //     const formattedDate = fechaObj.toLocaleDateString('es-ES'); // → dd/mm/yyyy
+  //     const formattedDateDashed = formattedDate.replace(/\//g, '-'); // → dd-mm-yyyy
+  //     return { ...record, fecha_case: formattedDateDashed, total: record.monto };
+  //   });
+  // }
+  
   function renameFields(records: any[]) {
     return records.map((record) => {
-      return { ...record, fecha_case: record.fecha, total: record.monto };
+      const fechaObj = new Date(record.fecha);
+      const day = String(fechaObj.getDate()).padStart(2, '0');
+      const month = String(fechaObj.getMonth() + 1).padStart(2, '0');
+      const year = fechaObj.getFullYear();
+      const formattedDate = `${day}-${month}-${year}`;  // → 02-01-2023
+      return { ...record, fecha_case: formattedDate, total: record.monto };
     });
   }
-
+  
+  
 
 
 
@@ -117,7 +140,7 @@ const Home: FunctionComponent = () => {
 
   //es muy importante ya que una desventaja de mongo es devuelve desordenada la data
   const filteredDepositosRecords = dataResponseRegisters
-  ? dataResponseRegisters
+    ? dataResponseRegisters
       .filter((item: { descRegistro: string; }) => selectedItem ? item.descRegistro === selectedItem.descRegistro : true)
       .sort((record1: { fecha: string | number | Date; }, record2: { fecha: string | number | Date; }) => {
         const date1 = typeof record1.fecha === 'string' ? new Date(record1.fecha).getTime() : record1.fecha;
@@ -125,10 +148,10 @@ const Home: FunctionComponent = () => {
 
         return (date1 as number) - (date2 as number);
       })
-  : [];
+    : [];
 
 
- // console.log(filteredDepositosRecords);
+  // console.log(filteredDepositosRecords);
 
 
 
@@ -173,7 +196,7 @@ const Home: FunctionComponent = () => {
       <div style={{ flex: '50%', paddingRight: '10px' }}>
         {/* <Typography variant="h7" style={{ textAlign: 'left' }}> */}
         <Typography className="h7" style={{ textAlign: 'left' }}>
-        
+
           {title}
           <ul style={{ listStyle: 'none', paddingLeft: '20px' }}>
             {filteredData.map((item: any, index: number) => (
@@ -245,7 +268,7 @@ const Home: FunctionComponent = () => {
 
   return (
     // <Container component="main" maxWidth="xs" sx={{ marginTop: 10, height: '540.5px' }}>
-    <Container component="main" maxWidth="xs" className={`fade-in-vertical ${isVisible ? 'active' : ''} common-styles`}> 
+    <Container component="main" maxWidth="xs" className={`fade-in-vertical ${isVisible ? 'active' : ''} common-styles`}>
       <CssBaseline />
       <div style={{ textAlign: "center" }}>
         <Typography variant="h5" align="center" gutterBottom>
@@ -275,20 +298,49 @@ const Home: FunctionComponent = () => {
       <Dialog open={openDialog} onClose={handleCloseDialog}>
         {selectedItem && (
           <div>
-            <DialogTitle>{selectedItem.descRegistro} History</DialogTitle>
+            {/* <DialogTitle>{selectedItem.descRegistro} History</DialogTitle> */}
+            <DialogTitle>{selectedItem.descRegistro} </DialogTitle>
             <DialogContent>
               {selectedItemAmountSum !== null && (
                 <div>
-                  <Typography variant="h6">Total Amount: {selectedItemAmountSum}</Typography>
+                  {/* <Typography variant="h6">Total Amount: {selectedItemAmountSum}</Typography> */}
+                  Total Amount: ${selectedItemAmountSum ? selectedItemAmountSum.toLocaleString("es-ES") : "0"}
+
                   <BarChart width={400} height={300}
                     // data={filteredDataResponseRegistersMonth}>
                     data={getDataForSelectedFilter()}>
                     {/* //<XAxis dataKey="month" /> */}
-                    <XAxis dataKey="fecha_case" />
-                    <YAxis dataKey="total" />
-                    <Tooltip />
+
+                    {/* <XAxis dataKey="fecha_case" /> */}
+                    <XAxis 
+                      dataKey="fecha_case"
+                      tick={{ fontSize: 10 }}
+                    />
+
+
+
+                    {/* <YAxis dataKey="total" /> */}
+                    <YAxis
+                      dataKey="total"
+                      tickFormatter={(value) => `$${value.toLocaleString("es-ES")}`}
+                      tick={{ fontSize: 10 }} 
+                    />
+                    {/* <Tooltip /> */}
+                    <Tooltip
+                      formatter={(value: number) => `$${value.toLocaleString("es-ES")}`}
+                    />
+
                     <Legend />
                     <Bar dataKey="total" fill="#8884d8" />
+                    {/* <Bar
+                      dataKey="total"
+                      fill="#8884d8"
+                      label={{
+                        // position: "top",
+                        formatter: (value: number) => `$${value.toLocaleString("es-ES")}`,
+                      }}
+                    /> */}
+
                   </BarChart>
                 </div>
               )}
