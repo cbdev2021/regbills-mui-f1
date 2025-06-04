@@ -176,7 +176,7 @@ const DataReg: FunctionComponent = () => {
             </Box>
 
             <Typography variant="h6">
-              Total Mes: {sumaDeValoresDelMes}
+              Total Month: {sumaDeValoresDelMes}
             </Typography>
 
             {tipoFiltrado.length > 0 && (
